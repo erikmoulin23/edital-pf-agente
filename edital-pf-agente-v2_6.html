@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Polícia Federal · Agente · 2025</title>
+<style>
+  :root{
+    --bg:#111318;
+    --panel:#171a21;
+    --panel-2:#1d212a;
+    --line:rgba(255,255,255,0.07);
+    --gold:#c9a15a;
+    --gold-soft:#a98a52;
+    --text:#e9e9ec;
+    --text-dim:#9497a3;
+    --text-faint:#5c6070;
+  }
+  body.light{
+    --bg:#faf8f4;
+    --panel:#ffffff;
+    --panel-2:#eee9de;
+    --line:rgba(20,20,20,0.09);
+    --gold:#a8763f;
+    --gold-soft:#8a6230;
+    --text:#232323;
+    --text-dim:#5c5c5c;
+    --text-faint:#8c8c8c;
+  }
+  body.light h1{color:#141414;}
+  body.light .sec-title{color:#141414;}
+  body.light .item.lvl1 .txt{color:#141414;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    min-height:100vh;
+    padding: 40px 20px 70px;
+    transition: background .25s ease, color .25s ease;
+  }
+  .mode-toggle{
+    position:fixed;
+    top:18px;
+    right:18px;
+    width:34px;height:34px;
+    border:none;
+    background:transparent;
+    color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    z-index:50;
+    opacity:0.75;
+    transition: opacity .2s ease;
+  }
+  .mode-toggle:hover{opacity:1;}
+  .wrap{max-width:780px;margin:0 auto;}
+
+  header{
+    margin-bottom:36px;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    margin:0 0 22px;
+    color:#fff;
+  }
+
+  .overall-row{
+    display:flex;align-items:center;gap:16px;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .overall-pct{
+    font-size:22px;font-weight:700;color:var(--gold);min-width:52px;
+  }
+  .overall-bar{
+    flex:1;height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;
+  }
+  .overall-bar>div{height:100%;background:var(--gold);transition:width .35s ease;}
+  .overall-label{font-size:12px;color:var(--text-dim);white-space:nowrap;}
+
+  .toolbar{
+    display:flex;gap:8px;margin:16px 0 8px;
+  }
+  .toolbar button{
+    background:none;border:1px solid var(--line);color:var(--text-dim);
+    padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;
+  }
+  .toolbar button:hover{border-color:var(--gold-soft);color:var(--gold);}
+
+  .block-label{
+    font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--text-faint);
+    margin: 34px 0 12px;
+    padding-bottom:6px;
+  }
+  .block-label:first-of-type{margin-top:26px;}
+
+  details.section{
+    border-bottom:1px solid var(--line);
+  }
+  details.section summary{
+    list-style:none;
+    cursor:pointer;
+    padding:18px 0;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  details.section summary::-webkit-details-marker{display:none;}
+
+  .sec-title{
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:0.1px;
+  }
+  .sec-meta{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .sec-pct{font-size:13px;color:var(--gold);font-weight:700;min-width:34px;text-align:right;}
+  .mini-bar{width:56px;height:3px;background:var(--panel-2);border-radius:2px;overflow:hidden;}
+  .mini-bar>div{height:100%;background:var(--gold);}
+  .chev{color:var(--text-faint);font-size:11px;transition:transform .2s;}
+  details[open] .chev{transform:rotate(90deg);}
+
+  .items{padding: 0 0 20px;}
+  .item{
+    padding:11px 0;
+    border-top:1px solid var(--line);
+  }
+  .item:first-child{border-top:none;}
+  .item-row{
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    align-items:start;
+    gap:8px 16px;
+  }
+
+  .txt{font-size:14px;line-height:1.5;color:var(--text);padding-top:3px;}
+  .num{color:var(--gold-soft);font-weight:600;margin-right:6px;font-variant-numeric:tabular-nums;}
+  .item.lvl1 .txt{font-weight:600;color:#fff;}
+  .item.lvl2{padding-left:20px;}
+  .item.lvl2 .txt{color:#c7cad6;}
+  .item.lvl3{padding-left:40px;}
+  .item.lvl3 .txt{color:var(--text-dim);font-size:13px;}
+
+  body.light .item.lvl2 .txt{color:#3f4250;}
+  body.light .item.lvl3 .txt{color:#55586a;}
+
+  .checks{display:flex;gap:5px;padding-top:2px;}
+  .checks label{
+    width:24px;height:24px;border-radius:5px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    font-size:10px;color:var(--text-faint);
+    position:relative;
+  }
+  .checks input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;}
+  .checks label.on{background:var(--gold);border-color:var(--gold);color:#1d1607;font-weight:700;}
+  .checks label.primary{border-color:rgba(201,161,90,0.35);}
+
+  .results-toggle{
+    background:none;border:none;color:var(--text-faint);
+    font-size:12px;cursor:pointer;padding-top:4px;
+    display:flex;align-items:center;gap:4px;white-space:nowrap;
+  }
+  .results-toggle:hover{color:var(--gold);}
+  .results-toggle .chev{font-size:9px;transition:transform .15s;}
+  .results-toggle.open .chev{transform:rotate(180deg);}
+  .results-toggle.open{color:var(--gold);}
+
+  .results-panel{
+    display:none;
+    margin-top:10px;
+    padding:10px 12px;
+    background:var(--panel);
+    border-radius:6px;
+    border:1px solid var(--line);
+  }
+  .results-panel.open{display:flex;flex-direction:column;gap:8px;}
+  .results-row{display:flex;align-items:center;gap:10px;}
+  .results-row .rlabel{font-size:12px;color:var(--text-dim);width:66px;flex-shrink:0;}
+  .qa{display:flex;gap:5px;align-items:center;}
+  .qa input{
+    text-align:center;
+    background:var(--bg);border:1px solid var(--line);border-radius:5px;
+    color:var(--text);font-size:12.5px;padding:5px 4px;
+  }
+  .qa input.num-field{width:46px;}
+  .qa input.acertos-field{width:64px;}
+  .qa input::placeholder{color:var(--text-faint);}
+  .qa .slash{color:var(--text-faint);font-size:12px;}
+  .qa .pct{
+    font-size:12px;font-weight:700;color:var(--gold);
+    min-width:38px;text-align:right;
+  }
+
+  @media (max-width:600px){
+    .item-row{grid-template-columns:1fr;}
+    .checks{padding-top:0;}
+    .results-toggle{padding-top:4px;}
+  }
+
+  .stats-summary{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .stat-card{
+    background:var(--panel);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .stat-card .stat-label{font-size:11px;color:var(--text-dim);margin-bottom:4px;}
+  .stat-card .stat-value{font-size:19px;font-weight:700;color:var(--gold);}
+  .rev-compare{display:flex;flex-direction:column;gap:6px;}
+  .rev-compare-row{display:flex;align-items:center;gap:10px;}
+  .rev-compare-row .rc-label{font-size:11px;color:var(--text-dim);width:64px;flex-shrink:0;}
+  .rev-compare-row .rc-bar{flex:1;height:6px;background:var(--panel-2);border-radius:3px;overflow:hidden;}
+  .rev-compare-row .rc-bar>div{height:100%;background:var(--gold);}
+  .rev-compare-row .rc-pct{font-size:11px;color:var(--text-dim);width:34px;text-align:right;}
+
+  @media (max-width:600px){
+    .stats-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  .filters-row{
+    display:flex;gap:8px;margin:12px 0 8px;flex-wrap:wrap;
+  }
+  .filters-row select{
+    background:var(--panel);border:1px solid var(--line);color:var(--text-dim);
+    font-size:12px;padding:6px 10px;border-radius:6px;cursor:pointer;
+  }
+  .filters-row select:hover{border-color:var(--gold-soft);}
+
+  .sec-title-wrap{display:flex;align-items:center;gap:8px;}
+  .badge-done{
+    font-size:11px;color:#3fae6a;font-weight:700;
+    display:inline-flex;align-items:center;gap:2px;
+  }
+
+  .acc-dot{
+    width:8px;height:8px;border-radius:50%;flex-shrink:0;
+    background:var(--text-faint);
+  }
+  .acc-dot.acc-good{background:#3fae6a;}
+  .acc-dot.acc-mid{background:#d4a63a;}
+  .acc-dot.acc-low{background:#c9564a;}
+
+  .last-reviewed{font-size:11px;color:var(--text-faint);white-space:nowrap;}
+
+  .notes-row{
+    border-top:1px solid var(--line);
+    padding-top:8px;
+    margin-top:2px;
+  }
+  .notes-row label{font-size:11px;color:var(--text-dim);display:block;margin-bottom:4px;}
+  .notes-row textarea{
+    width:100%;min-height:44px;resize:vertical;
+    background:var(--bg);border:1px solid var(--line);border-radius:5px;
+    color:var(--text);font-size:12.5px;padding:6px 8px;font-family:inherit;
+  }
+  .notes-row textarea::placeholder{color:var(--text-faint);}
+</style>
+</head>
+<body>
+<button class="mode-toggle" id="modeToggle" title="Alternar modo claro/escuro" aria-label="Alternar modo claro/escuro">
+  <svg id="modeIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5z"></path>
+  </svg>
+</button>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Edital Verticalizado</div>
+    <h1>Polícia Federal · Agente · 2025</h1>
+    <div class="overall-row">
+      <div class="overall-pct" id="overallPct">0%</div>
+      <div class="overall-bar"><div id="overallBar" style="width:0%"></div></div>
+      <div class="overall-label" id="overallLabel">0 / 0 tópicos</div>
+    </div>
+
+    <div class="stats-summary">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Questões respondidas</div>
+          <div class="stat-value" id="statTotalQ">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Acertos</div>
+          <div class="stat-value" id="statTotalA">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">% de acerto geral</div>
+          <div class="stat-value" id="statPctGeral">—</div>
+        </div>
+      </div>
+      <div class="rev-compare">
+        <div class="rev-compare-row">
+          <span class="rc-label">Revisão 1</span>
+          <div class="rc-bar"><div id="rcBar1" style="width:0%"></div></div>
+          <span class="rc-pct" id="rcPct1">—</span>
+        </div>
+        <div class="rev-compare-row">
+          <span class="rc-label">Revisão 2</span>
+          <div class="rc-bar"><div id="rcBar2" style="width:0%"></div></div>
+          <span class="rc-pct" id="rcPct2">—</span>
+        </div>
+        <div class="rev-compare-row">
+          <span class="rc-label">Revisão 3</span>
+          <div class="rc-bar"><div id="rcBar3" style="width:0%"></div></div>
+          <span class="rc-pct" id="rcPct3">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button id="expandAll">Expandir tudo</button>
+      <button id="collapseAll">Recolher tudo</button>
+      <button id="exportBtn">Exportar progresso</button>
+      <button id="importBtn">Importar progresso</button>
+      <input type="file" id="importInput" accept="application/json" style="display:none;">
+    </div>
+    <div class="filters-row">
+      <select id="filterSelect">
+        <option value="all">Mostrar: todos</option>
+        <option value="pending">Mostrar: só pendentes</option>
+      </select>
+      <select id="sortSelect">
+        <option value="default">Ordenar: como no edital</option>
+        <option value="worst">Ordenar: pior desempenho primeiro</option>
+        <option value="least">Ordenar: menos revisado primeiro</option>
+      </select>
+    </div>
+  </header>
+
+  <div id="app"></div>
+
+</div>
+
+<script>
+// [level, number, text]
+const DATA = [
+{ block:"BLOCO I", subject:"Língua Portuguesa", items:[
+ [1,"1","Compreensão e interpretação de textos de gêneros variados."],
+ [1,"2","Reconhecimento de tipos e gêneros textuais."],
+ [1,"3","Domínio da ortografia oficial."],
+ [1,"4","Domínio dos mecanismos de coesão textual."],
+ [2,"4.1","Emprego de elementos de referenciação, substituição e repetição, de conectores e de outros elementos de sequenciação textual."],
+ [2,"4.2","Emprego de tempos e modos verbais."],
+ [1,"5","Domínio da estrutura morfossintática do período."],
+ [2,"5.1","Emprego das classes de palavras."],
+ [2,"5.2","Relações de coordenação entre orações e entre termos da oração."],
+ [2,"5.3","Relações de subordinação entre orações e entre termos da oração."],
+ [2,"5.4","Emprego dos sinais de pontuação."],
+ [2,"5.5","Concordância verbal e nominal."],
+ [2,"5.6","Regência verbal e nominal."],
+ [2,"5.7","Emprego do sinal indicativo de crase."],
+ [2,"5.8","Colocação dos pronomes átonos."],
+ [1,"6","Reescrita de frases e parágrafos do texto."],
+ [2,"6.1","Significação das palavras."],
+ [2,"6.2","Substituição de palavras ou de trechos de texto."],
+ [2,"6.3","Reorganização da estrutura de orações e de períodos do texto."],
+ [2,"6.4","Reescrita de textos de diferentes gêneros e níveis de formalidade."],
+ [1,"7","Correspondência oficial (conforme Manual de Redação da Presidência da República)."],
+ [2,"7.1","Aspectos gerais da redação oficial."],
+ [2,"7.2","Finalidade dos expedientes oficiais."],
+ [2,"7.3","Adequação da linguagem ao tipo de documento."],
+ [2,"7.4","Adequação do formato do texto ao gênero."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Administrativo", items:[
+ [1,"1","Noções de organização administrativa."],
+ [2,"1.1","Centralização, descentralização, concentração e desconcentração."],
+ [2,"1.2","Administração direta e indireta."],
+ [2,"1.3","Autarquias, fundações, empresas públicas e sociedades de economia mista."],
+ [1,"2","Ato administrativo."],
+ [2,"2.1","Conceito, requisitos, atributos, classificação e espécies."],
+ [1,"3","Agentes públicos."],
+ [2,"3.1","Legislação pertinente."],
+ [3,"3.1.1","Lei nº 8.112/1990 e suas alterações."],
+ [3,"3.1.2","Disposições constitucionais aplicáveis."],
+ [2,"3.2","Disposições doutrinárias."],
+ [3,"3.2.1","Conceito."],
+ [3,"3.2.2","Espécies."],
+ [3,"3.2.3","Cargo, emprego e função pública."],
+ [1,"4","Poderes administrativos."],
+ [2,"4.1","Hierárquico, disciplinar, regulamentar e de polícia."],
+ [2,"4.2","Uso e abuso do poder."],
+ [1,"5","Licitação."],
+ [2,"5.1","Princípios."],
+ [2,"5.2","Contratação direta: dispensa e inexigibilidade."],
+ [2,"5.3","Modalidades."],
+ [2,"5.4","Tipos."],
+ [2,"5.5","Procedimento."],
+ [1,"6","Controle da Administração Pública."],
+ [2,"6.1","Controle exercido pela Administração Pública."],
+ [2,"6.2","Controle judicial."],
+ [2,"6.3","Controle legislativo."],
+ [1,"7","Responsabilidade civil do Estado."],
+ [2,"7.1","Responsabilidade civil do Estado no direito brasileiro."],
+ [3,"7.1.1","Responsabilidade por ato comissivo do Estado."],
+ [3,"7.1.2","Responsabilidade por omissão do Estado."],
+ [2,"7.2","Requisitos para a demonstração da responsabilidade do Estado."],
+ [2,"7.3","Causas excludentes e atenuantes da responsabilidade do Estado."],
+ [1,"8","Regime jurídico-administrativo."],
+ [2,"8.1","Conceito."],
+ [2,"8.2","Princípios expressos e implícitos da Administração Pública."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Constitucional", items:[
+ [1,"1","Direitos e garantias fundamentais: direitos e deveres individuais e coletivos; direito à vida, à liberdade, à igualdade, à segurança e à propriedade; direitos sociais; nacionalidade; cidadania e direitos políticos; partidos políticos; garantias constitucionais individuais; garantias dos direitos coletivos, sociais e políticos."],
+ [1,"2","Poder Executivo: forma e sistema de governo; chefia de Estado e chefia de governo."],
+ [1,"3","Defesa do Estado e das instituições democráticas: segurança pública; organização da segurança pública."],
+ [1,"4","Ordem social: base e objetivos da ordem social; seguridade social; meio ambiente; família, criança, adolescente, idoso, indígenas."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Penal e Processual Penal", items:[
+ [1,"1","Princípios básicos."],
+ [1,"2","Aplicação da lei penal."],
+ [2,"2.1","A lei penal no tempo e no espaço."],
+ [2,"2.2","Tempo e lugar do crime."],
+ [2,"2.3","Territorialidade e extraterritorialidade da lei penal."],
+ [1,"3","O fato típico e seus elementos."],
+ [2,"3.1","Crime consumado e tentado."],
+ [2,"3.2","Ilicitude e causas de exclusão."],
+ [2,"3.3","Excesso punível."],
+ [1,"4","Crimes contra a pessoa."],
+ [1,"5","Crimes contra o patrimônio."],
+ [1,"6","Crimes contra a fé pública."],
+ [1,"7","Crimes contra a Administração Pública."],
+ [1,"8","Inquérito policial."],
+ [2,"8.1","Histórico, natureza, conceito, finalidade, características, fundamento, titularidade, grau de cognição, valor probatório, formas de instauração, notitia criminis, delatio criminis, procedimentos investigativos, indiciamento, garantias do investigado; conclusão."],
+ [1,"9","Prova."],
+ [2,"9.1","Preservação de local de crime."],
+ [2,"9.2","Requisitos e ônus da prova."],
+ [2,"9.3","Nulidade da prova."],
+ [2,"9.4","Documentos de prova."],
+ [2,"9.5","Reconhecimento de pessoas e coisas."],
+ [2,"9.6","Acareação."],
+ [2,"9.7","Indícios."],
+ [2,"9.8","Busca e apreensão."],
+ [1,"10","Restrição de liberdade."],
+ [2,"10.1","Prisão em flagrante."],
+]},
+{ block:"BLOCO I", subject:"Direitos Humanos", items:[
+ [1,"1","Direitos humanos na Constituição Federal de 1988."],
+ [1,"2","Sistema internacional de proteção dos direitos humanos."],
+ [1,"3","Convenção para a Prevenção e Punição ao Crime de Genocídio."],
+ [1,"4","Convenção Relativa ao Estatuto dos Refugiados. Protocolo sobre o Estatuto dos Refugiados."],
+ [1,"5","Convenção sobre a Eliminação de Todas as Formas de Discriminação Racial."],
+ [1,"6","Convenção sobre a Eliminação de Todas as Formas de Discriminação contra a Mulher."],
+ [1,"7","Convenção contra a Tortura e Outros Tratamentos ou Penas Cruéis, Desumanos ou Degradantes."],
+ [1,"8","Convenção Internacional para a Proteção de Todas as Pessoas contra o Desaparecimento Forçado."],
+ [1,"9","Regras mínimas da ONU para o tratamento de pessoas presas."],
+ [1,"10","Princípios Básicos sobre o Uso da Força e Armas de Fogo (8º Congresso da ONU, Havana, Cuba, 27/08 a 07/09/1990)."],
+ [1,"11","Lei nº 13.060/2014 - Disciplina o uso dos instrumentos de menor potencial ofensivo pelos agentes de segurança pública."],
+ [1,"12","Decreto nº 12.341/2024 - Regulamenta a Lei nº 13.060/2014."],
+]},
+{ block:"BLOCO I", subject:"Legislação Especial", items:[
+ [1,"1","Lei 14.967/2024 (Estatuto da Segurança Privada e da Segurança das Instituições Financeiras)"],
+ [1,"2","Lei nº 10.357/2001 (Normas de controle e fiscalização de produtos químicos)"],
+ [1,"3","Lei nº 13.445/2017 (Lei de migração)"],
+ [1,"4","Lei nº 11.343/2006 (repressão ao tráfico ilícito de drogas) e alterações"],
+ [1,"5","Lei nº 9.455/1997 (crimes de tortura) e alterações"],
+ [1,"6","Lei nº 8.069/1990 (ECA) e alterações"],
+ [1,"7","Lei nº 10.826/2003 (registro, posse e comercialização de arma de fogo) e alterações"],
+ [1,"8","Lei nº 9.605/1998 (infrações ambientais) e alterações"],
+ [1,"9","Lei nº 10.446/2002 (infrações de repercussão interestadual ou internacional) e alterações"],
+ [1,"10","Lei nº 13.444/2017 (Identificação Civil Nacional)"],
+ [1,"11","Lei nº 14.534/2023 (adota CPF como nº identificação)"],
+ [1,"12","Lei nº 7.116/1983 (Carteira de Identidade) e Decreto nº 10.977/2022"],
+ [1,"13","Decreto nº 11.797/2023 (serviço de identificação do cidadão)"],
+ [1,"14","Lei nº 9.545/1997 (institui o número único de registro de identidade civil)"],
+ [1,"15","Decreto nº 11.491/2023 (Convenção sobre o Crime Cibernético)"],
+]},
+{ block:"BLOCO I", subject:"Estatística", items:[
+ [1,"1","Estatística descritiva e análise exploratória de dados: gráficos, diagramas, tabelas, medidas descritivas (posição, dispersão, assimetria e curtose)"],
+ [1,"2","Probabilidade"],
+ [2,"2.1","Probabilidade e Probabilidade Condicional"],
+ [2,"2.2","Conceitos básicos de probabilidade"],
+ [2,"2.3","Cálculo de probabilidades condicionais"],
+ [2,"2.4","Definições básicas e axiomas"],
+ [2,"2.5","Probabilidade condicional e independência"],
+ [2,"2.6","Variáveis aleatórias discretas e contínuas"],
+ [2,"2.7","Distribuição de probabilidades"],
+ [2,"2.8","Função de probabilidade"],
+ [2,"2.9","Função densidade de probabilidade"],
+ [2,"2.10","Esperança e momentos"],
+ [2,"2.11","Distribuições especiais"],
+ [2,"2.12","Distribuições condicionais e independência"],
+ [2,"2.13","Transformação de variáveis"],
+ [2,"2.14","Leis dos grandes números"],
+ [2,"2.15","Teorema central do limite"],
+ [2,"2.16","Amostras aleatórias"],
+ [2,"2.17","Distribuições amostrais"],
+ [2,"2.18","Independência de Eventos, Regra de Bayes e Teorema da Probabilidade Total"],
+ [2,"2.19","Conceito de independência"],
+ [2,"2.20","Aplicação da regra de Bayes"],
+ [2,"2.21","Uso do teorema da probabilidade total"],
+ [2,"2.21","Variáveis Aleatórias e Funções de Probabilidade"],
+ [3,"2.21.1","Definição e exemplos de variáveis aleatórias"],
+ [3,"2.21.2","Função de probabilidade (para variáveis discretas) e função densidade de probabilidade (para variáveis contínuas)"],
+ [2,"2.22","Principais Distribuições de Probabilidade Discretas e Contínuas"],
+ [3,"2.22.1","Distribuição uniforme"],
+ [3,"2.22.2","Distribuição de Bernoulli"],
+ [3,"2.22.3","Distribuição binomial"],
+ [3,"2.22.4","Distribuição normal"],
+ [2,"2.23","Medidas de Tendência Central"],
+ [3,"2.23.1","Média (aritmética, ponderada, geométrica e harmônica)"],
+ [3,"2.23.2","Mediana"],
+ [3,"2.23.3","Moda"],
+ [2,"2.24","Medidas de Dispersão"],
+ [3,"2.24.1","Amplitude"],
+ [3,"2.24.2","Variância"],
+ [3,"2.24.3","Desvio padrão"],
+ [3,"2.24.4","Coeficiente de variação"],
+ [2,"2.25","Coeficiente de Correlação de Pearson"],
+ [3,"2.25.1","Conceito e cálculo da correlação entre duas variáveis"],
+ [2,"2.26","Teorema Central do Limite"],
+ [3,"2.26.1","Importância do teorema para a distribuição amostral da média"],
+ [2,"2.27","Regra Empírica (Regra dos Três Sigma) da Distribuição Normal"],
+ [3,"2.27.1","Aproximação da dispersão dos dados na distribuição normal"],
+ [2,"2.28","Técnicas de Amostragem"],
+ [2,"2.29","Amostragem aleatória simples, estratificada, sistemática e por conglomerados"],
+ [3,"2.29.1","Conceitos básicos para determinação do tamanho amostral"],
+ [1,"3","Inferência estatística"],
+ [2,"3.1","Estimação pontual: métodos de estimação, propriedades dos estimadores, suficiência"],
+ [2,"3.2","Estimação intervalar: intervalos de confiança, intervalos de credibilidade"],
+ [2,"3.3","Testes de hipóteses: hipóteses simples e compostas, níveis de significância e potência de um teste, teste t de Student, teste qui-quadrado"],
+ [1,"4","Análise de regressão linear"],
+ [2,"4.1","Critérios de mínimos quadrados e de máxima verossimilhança"],
+ [2,"4.2","Modelos de regressão linear"],
+ [2,"4.3","Inferência sobre os parâmetros do modelo"],
+ [2,"4.4","Análise de variância"],
+ [2,"4.5","Análise de resíduos"],
+ [1,"5","Técnicas de amostragem: amostragem aleatória simples, estratificada, sistemática e por conglomerados"],
+ [2,"5.1","Tamanho amostral"],
+]},
+{ block:"BLOCO I", subject:"Raciocínio Lógico", items:[
+ [1,"1","Estruturas lógicas."],
+ [1,"2","Lógica de argumentação: analogias, inferências, deduções e conclusões."],
+ [1,"3","Lógica sentencial (ou proposicional)."],
+ [2,"3.1","Proposições simples e compostas."],
+ [2,"3.2","Tabelas verdade."],
+ [2,"3.3","Equivalências."],
+ [2,"3.4","Leis de Morgan."],
+ [2,"3.5","Diagramas lógicos."],
+ [1,"4","Lógica de primeira ordem."],
+ [1,"5","Princípios de contagem e probabilidade."],
+ [1,"6","Operações com conjuntos."],
+ [1,"7","Raciocínio lógico envolvendo problemas aritméticos, geométricos e matriciais."],
+]},
+{ block:"BLOCO II", subject:"Informática", items:[
+ [1,"1","Conceito de internet e intranet."],
+ [1,"2","Conceitos e modos de utilização de tecnologias, ferramentas, aplicativos e procedimentos associados a internet/intranet."],
+ [2,"2.1","Ferramentas e aplicativos comerciais de navegação, de correio eletrônico, de grupos de discussão, de busca, de pesquisa e de redes sociais."],
+ [2,"2.2","Noções de sistema operacional (ambiente Linux e Windows)."],
+ [2,"2.3","Acesso à distância a computadores, transferência de informação e arquivos, aplicativos de áudio, vídeo e multimídia."],
+ [2,"2.4","Edição de textos, planilhas e apresentações (ambientes Microsoft Office e LibreOffice)."],
+ [1,"3","Redes de computadores."],
+ [2,"3.1","Formação de endereços IPV4 e IPV6."],
+ [1,"4","Conceitos de proteção e segurança."],
+ [2,"4.1","Noções de vírus, worms e pragas virtuais."],
+ [2,"4.2","Aplicativos para segurança (antivírus, firewall, anti-spyware etc.)."],
+ [1,"5","Computação na nuvem (cloud computing)."],
+ [1,"6","Fundamentos da Teoria Geral de Sistemas."],
+ [2,"6.1","Camadas de Aplicação, processos, frontend, backend."],
+ [1,"7","Sistemas de informação."],
+ [2,"7.1","Fases e etapas de sistema de informação."],
+ [2,"7.2","Análise de requisitos, especificação, ambientes de testes, homologação, produção e suporte."],
+ [1,"8","Teoria da informação."],
+ [2,"8.1","Conceitos de informação, dados, representação de dados, de conhecimentos, segurança e inteligência."],
+ [1,"9","Banco de dados."],
+ [2,"9.1","Base de dados, documentação e prototipação."],
+ [2,"9.2","Modelagem conceitual: abstração, modelo entidade-relacionamento, análise funcional e administração de dados."],
+ [2,"9.3","Dados estruturados e não estruturados."],
+ [2,"9.4","Banco de dados relacionais: conceitos básicos e características."],
+ [2,"9.5","Chaves e relacionamentos."],
+ [2,"9.6","Noções de mineração de dados: conceituação e características."],
+ [2,"9.7","Noções de aprendizado de máquina."],
+ [2,"9.8","Noções de Big data: conceito, premissas e aplicação."],
+ [1,"10","Redes de comunicação."],
+ [2,"10.1","Introdução a redes (computação/telecomunicações)."],
+ [2,"10.2","Camada física, de enlace de dados e subcamada de acesso ao meio."],
+ [2,"10.3","Noções básicas de transmissão de dados: tipos de enlace, códigos, modos e meios de transmissão."],
+ [1,"11","Redes de computadores: locais, metropolitanas e de longa distância."],
+ [2,"11.1","Terminologia e aplicações, topologias, modelos de arquitetura (OSI/ISO e TCP/IP) e protocolos."],
+ [2,"11.2","Interconexão de redes, nível de transporte."],
+ [1,"12","Noções de programação Python e R."],
+ [1,"13","Metadados de arquivos."],
+ [1,"14","Formatos de arquivos de intercâmbio entre sistemas biométricos: NIST, XML, JSON."],
+ [1,"15","Testes de acurácia do NIST.GOV."],
+ [2,"15.1","Conceitos de falso positivo e falso negativo (FPIR e FNIR)."],
+ [1,"16","Inteligência Artificial (IA)."],
+ [2,"16.1","Conceitos de Machine Learning."],
+ [2,"16.2","Principais ferramentas de mercado (Copilot, ChatGPT, META)."],
+ [1,"17","Tecnologias, Ferramentas e Aplicativos."],
+ [2,"17.1","Noções de sistema operacional (ambiente Linux e Windows)."],
+ [2,"17.2","Noções de acesso remoto a computadores, transferência de arquivos, comunicação multimídia e colaboração online (Microsoft Teams)."],
+ [1,"18","Noções de Redes e Comunicação."],
+ [2,"18.1","Conceito de Internet e Intranet."],
+ [2,"18.2","Noções de arquitetura e princípios de funcionamento das redes."],
+ [2,"18.3","Tipos de redes: locais (LAN), metropolitanas (MAN) e de longa distância (WAN)."],
+ [2,"18.4","Modelo OSI/ISO e modelo TCP/IP: camadas, funções e protocolos associados."],
+ [2,"18.5","Protocolos de comunicação: Ethernet, IP (IPv4 e IPv6), TCP, UDP, DNS, DHCP e SNMP."],
+ [2,"18.6","Protocolos e mecanismos de segurança: VPN, SSL/TLS."],
+ [2,"18.7","Redes sem fio: padrões IEEE 802.11, WPA/WPA2, segurança e boas práticas."],
+ [1,"19","Noções de Computação em Nuvem."],
+ [2,"19.1","Definição e características das nuvens privadas e públicas."],
+ [2,"19.2","Modelos de Serviço em Nuvem: Infraestrutura como Serviço (IaaS), Plataforma como Serviço (PaaS) e Software como Serviço (SaaS)."],
+ [1,"20","Conceitos de Proteção e Segurança."],
+ [2,"20.1","Ameaças digitais e malwares: noções de vírus, worms, trojans, ransomware, spyware, rootkits, botnets e outras pragas virtuais."],
+ [2,"20.2","Ferramentas e técnicas de segurança: uso de antivírus, firewall, anti-spyware e autenticação multifator (MFA)."],
+ [2,"20.3","Noções de criptografia e proteção de dados: hash criptográfico (MD5, SHA-1, SHA-256), assinaturas digitais."],
+ [2,"20.4","Noções de Controle de acesso e autenticação."],
+ [1,"21","Dados."],
+ [2,"21.1","Banco de dados relacionais: conceitos básicos e características."],
+ [2,"21.2","Noções de linguagem SQL."],
+ [2,"21.3","Modelagem conceitual: entidades, atributos e relacionamentos."],
+ [2,"21.4","Dados estruturados e não estruturados."],
+ [2,"21.5","Conceito de DataWarehouse, DataMart, DataLake, DataMesh."],
+ [2,"21.6","Metadados."],
+ [1,"22","Noções de análise de dados."],
+ [2,"22.1","Mineração de dados: conceituação e características."],
+ [2,"22.2","Noções de Business Intelligence: Ferramentas e aplicabilidade."],
+ [2,"22.3","Noções de aprendizado de máquina, inteligência artificial."],
+ [2,"22.4","Noções de big data: conceito, premissas e aplicação."],
+ [1,"23","Noções de Programação e Interoperabilidade."],
+ [2,"23.1","Noções de programação em Python."],
+ [2,"23.2","Conceito de API (Application Programming Interface)."],
+ [2,"23.3","ETL/ELT (Extract, Transform, Load)."],
+]},
+{ block:"BLOCO III", subject:"Contabilidade Geral", items:[
+ [1,"1","Conceitos, objetivos e finalidades da contabilidade."],
+ [1,"2","Patrimônio: componentes, equação fundamental do patrimônio, situação líquida, representação gráfica."],
+ [1,"3","Atos e fatos administrativos: conceitos, fatos permutativos, modificativos e mistos."],
+ [1,"4","Contas: conceitos, contas de débitos, contas de créditos e saldos."],
+ [1,"5","Plano de contas: conceitos, elenco de contas, função e funcionamento das contas."],
+ [1,"6","Escrituração: conceitos, lançamentos contábeis, elementos essenciais, fórmulas de lançamentos, livros de escrituração, métodos e processos, regime de competência e regime de caixa."],
+ [1,"7","Contabilização de operações contábeis diversas: juros, descontos, tributos, aluguéis, variação monetária/cambial, folha de pagamento, compras, vendas e provisões, depreciações e baixa de bens."],
+ [1,"8","Balancete de verificação: conceitos, modelos e técnicas de elaboração."],
+ [1,"9","Balanço patrimonial: conceitos, objetivo, composição."],
+ [1,"10","Demonstração de resultado de exercício: conceito, objetivo, composição."],
+ [1,"11","Lei nº 6.404/1976 e suas alterações, legislação complementar e pronunciamentos do CPC."],
+ [1,"12","Norma Brasileira de Contabilidade - NBC TSP Estrutura Conceitual, de 23/09/2016."],
+]},
+];
+
+let uid = 0;
+DATA.forEach(sec=>{ sec.items.forEach(it=>{ it.push('i'+(uid++)); }); });
+
+const STORAGE_PREFIX = 'pf-edital:';
+const state = {};
+
+function computePct(num, acertos){
+  const n = parseFloat(num);
+  const a = parseFloat(acertos);
+  if(!n || n<=0 || isNaN(a)) return '—';
+  return Math.round((a/n)*100)+'%';
+}
+
+function defaultItemState(){
+  return {r1:false,r2:false,r3:false,q1:'',a1:'',q2:'',a2:'',q3:'',a3:'',notes:'',lastReviewed:null};
+}
+
+async function loadState(){
+  for(const sec of DATA){
+    for(const it of sec.items){
+      const id = it[3];
+      try{
+        const res = await window.storage.get(STORAGE_PREFIX+id);
+        state[id] = res ? Object.assign(defaultItemState(), JSON.parse(res.value)) : defaultItemState();
+      }catch(e){
+        state[id] = defaultItemState();
+      }
+    }
+  }
+}
+
+const hasStorage = (typeof window.storage !== 'undefined' && window.storage && typeof window.storage.set === 'function');
+
+function saveState(id){
+  if(!hasStorage) return;
+  try{
+    window.storage.set(STORAGE_PREFIX+id, JSON.stringify(state[id])).catch(()=>{});
+  }catch(e){ /* storage not available in this context — progress still works in memory */ }
+}
+
+// progress counts when the FIRST review (r1) is checked
+function itemCounted(s){ return !!s.r1; }
+
+function itemReviewCount(s){ return (s.r1?1:0)+(s.r2?1:0)+(s.r3?1:0); }
+function itemIsPending(s){ return !(s.r1 && s.r2 && s.r3); }
+
+function itemAccuracy(s){
+  let q=0, a=0;
+  [1,2,3].forEach(n=>{
+    const qn = parseFloat(s['q'+n]), an = parseFloat(s['a'+n]);
+    if(qn>0 && !isNaN(an)){ q+=qn; a+=an; }
+  });
+  return q>0 ? (a/q)*100 : null;
+}
+
+function accuracyClass(pct){
+  if(pct===null) return '';
+  if(pct>=75) return 'acc-good';
+  if(pct>=50) return 'acc-mid';
+  return 'acc-low';
+}
+
+function daysAgoLabel(ts){
+  if(!ts) return 'nunca revisado';
+  const days = Math.floor((Date.now()-ts)/86400000);
+  if(days<=0) return 'revisado hoje';
+  if(days===1) return 'há 1 dia';
+  return `há ${days} dias`;
+}
+
+function computeSectionStats(sec){
+  const done = sec.items.filter(it=>itemCounted(state[it[3]])).length;
+  return { done, total: sec.items.length, pct: sec.items.length? Math.round((done/sec.items.length)*100) : 0 };
+}
+
+function computeOverallStats(){
+  let done=0, total=0;
+  DATA.forEach(sec=>{ const s=computeSectionStats(sec); done+=s.done; total+=s.total; });
+  return { done, total, pct: total? Math.round((done/total)*100) : 0 };
+}
+
+let filterMode = 'all';
+let sortMode = 'default';
+
+function getDisplayItems(sec){
+  let list = sec.items.slice();
+  if(filterMode === 'pending'){
+    list = list.filter(it=>itemIsPending(state[it[3]]));
+  }
+  if(sortMode === 'worst'){
+    list.sort((a,b)=>{
+      const pa = itemAccuracy(state[a[3]]); const pb = itemAccuracy(state[b[3]]);
+      if(pa===null && pb===null) return 0;
+      if(pa===null) return 1;
+      if(pb===null) return -1;
+      return pa-pb;
+    });
+  }else if(sortMode === 'least'){
+    list.sort((a,b)=>{
+      const sa=state[a[3]], sb=state[b[3]];
+      const ca=itemReviewCount(sa), cb=itemReviewCount(sb);
+      if(ca!==cb) return ca-cb;
+      const la=sa.lastReviewed||0, lb=sb.lastReviewed||0;
+      return la-lb;
+    });
+  }
+  return list;
+}
+
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML='';
+  let blockSeen = {};
+
+  DATA.forEach((sec, secIdx)=>{
+    if(!blockSeen[sec.block]){
+      blockSeen[sec.block]=true;
+      const lbl = document.createElement('div');
+      lbl.className='block-label';
+      lbl.textContent = sec.block;
+      app.appendChild(lbl);
+    }
+    const det = document.createElement('details');
+    det.className='section';
+    det.open = secIdx===0;
+
+    const summary = document.createElement('summary');
+    const st = computeSectionStats(sec);
+    summary.innerHTML = `
+      <span class="sec-title">${sec.subject}</span>
+      <span class="sec-meta">
+        <span class="sec-pct" data-secpct="${secIdx}">${st.pct}%</span>
+        <span class="mini-bar"><div data-secbar="${secIdx}" style="width:${st.pct}%"></div></span>
+        <span class="chev">▶</span>
+      </span>`;
+    det.appendChild(summary);
+
+    const itemsWrap = document.createElement('div');
+    itemsWrap.className='items';
+
+    getDisplayItems(sec).forEach(([lvl, number, text, id])=>{
+      const s = state[id];
+
+      const row = document.createElement('div');
+      row.className = 'item lvl'+lvl;
+
+      const itemRow = document.createElement('div');
+      itemRow.className = 'item-row';
+
+      const txt = document.createElement('div');
+      txt.className='txt';
+      const doneBadge = itemReviewCount(s)===3 ? '<span class="badge-done">✓ completo</span> ' : '';
+      txt.innerHTML = `<span class="num">${number}</span>${text} ${doneBadge}`;
+      itemRow.appendChild(txt);
+
+      const checks = document.createElement('div');
+      checks.className='checks';
+      [1,2,3].forEach(n=>{
+        const key = 'r'+n;
+        const lab = document.createElement('label');
+        lab.className = (s[key] ? 'on ':'') + (n===1?'primary':'');
+        lab.innerHTML = `<input type="checkbox" ${s[key]?'checked':''}><span>${n}</span>`;
+        lab.querySelector('input').addEventListener('change', (e)=>{
+          s[key] = e.target.checked;
+          if(s[key]) s.lastReviewed = Date.now();
+          lab.className = (s[key] ? 'on ':'') + (n===1?'primary':'');
+          saveState(id);
+          refreshAll();
+        });
+        checks.appendChild(lab);
+      });
+      itemRow.appendChild(checks);
+
+      const acc = itemAccuracy(s);
+      const toggleBtn = document.createElement('button');
+      toggleBtn.className='results-toggle';
+      const dot = acc!==null ? `<span class="acc-dot ${accuracyClass(acc)}" title="${Math.round(acc)}% de acerto"></span>` : '';
+      toggleBtn.innerHTML = `${dot}<span class="lbl">Ver resultado das questões</span><span class="chev">▾</span>`;
+      itemRow.appendChild(toggleBtn);
+
+      row.appendChild(itemRow);
+
+      const panel = document.createElement('div');
+      panel.className='results-panel';
+
+      const lastRevEl = document.createElement('div');
+      lastRevEl.className='last-reviewed';
+      lastRevEl.textContent = daysAgoLabel(s.lastReviewed);
+      panel.appendChild(lastRevEl);
+
+      [1,2,3].forEach(n=>{
+        const rRow = document.createElement('div');
+        rRow.className='results-row';
+        rRow.innerHTML = `<span class="rlabel">Revisão ${n}</span>
+          <div class="qa">
+            <input type="number" min="0" class="num-field" placeholder="Nº" value="${s['q'+n]}">
+            <span class="slash">/</span>
+            <input type="number" min="0" class="acertos-field" placeholder="Acertos" value="${s['a'+n]}">
+            <span class="pct">${computePct(s['q'+n], s['a'+n])}</span>
+          </div>`;
+        const [numInput, accInput] = rRow.querySelectorAll('input');
+        const pctEl = rRow.querySelector('.pct');
+        numInput.addEventListener('input', e=>{
+          s['q'+n] = e.target.value; saveState(id);
+          pctEl.textContent = computePct(s['q'+n], s['a'+n]);
+          refreshStatsSummary();
+        });
+        accInput.addEventListener('input', e=>{
+          s['a'+n] = e.target.value; saveState(id);
+          pctEl.textContent = computePct(s['q'+n], s['a'+n]);
+          refreshStatsSummary();
+        });
+        panel.appendChild(rRow);
+      });
+
+      const notesRow = document.createElement('div');
+      notesRow.className='notes-row';
+      notesRow.innerHTML = `<label>Observações</label>
+        <textarea placeholder="Ex: revisar questão de crase, confundi com o art. 5º...">${s.notes||''}</textarea>`;
+      notesRow.querySelector('textarea').addEventListener('input', e=>{
+        s.notes = e.target.value; saveState(id);
+      });
+      panel.appendChild(notesRow);
+
+      row.appendChild(panel);
+
+      toggleBtn.addEventListener('click', ()=>{
+        const isOpen = panel.classList.toggle('open');
+        toggleBtn.classList.toggle('open', isOpen);
+      });
+
+      itemsWrap.appendChild(row);
+    });
+
+    det.appendChild(itemsWrap);
+    app.appendChild(det);
+  });
+
+  refreshAll();
+}
+
+function refreshProgress(){
+  DATA.forEach((sec, secIdx)=>{
+    const st = computeSectionStats(sec);
+    const pctEl = document.querySelector(`[data-secpct="${secIdx}"]`);
+    const barEl = document.querySelector(`[data-secbar="${secIdx}"]`);
+    if(pctEl) pctEl.textContent = st.pct+'%';
+    if(barEl) barEl.style.width = st.pct+'%';
+  });
+  const overall = computeOverallStats();
+  document.getElementById('overallPct').textContent = overall.pct+'%';
+  document.getElementById('overallBar').style.width = overall.pct+'%';
+  document.getElementById('overallLabel').textContent = `${overall.done} / ${overall.total} tópicos`;
+}
+
+function refreshStatsSummary(){
+  let totalQ=0, totalA=0;
+  const perRev = [{q:0,a:0},{q:0,a:0},{q:0,a:0}];
+  DATA.forEach(sec=>{
+    sec.items.forEach(it=>{
+      const s = state[it[3]];
+      [1,2,3].forEach(n=>{
+        const q = parseFloat(s['q'+n]), a = parseFloat(s['a'+n]);
+        if(q>0 && !isNaN(a)){
+          totalQ+=q; totalA+=a;
+          perRev[n-1].q+=q; perRev[n-1].a+=a;
+        }
+      });
+    });
+  });
+  document.getElementById('statTotalQ').textContent = totalQ;
+  document.getElementById('statTotalA').textContent = totalA;
+  document.getElementById('statPctGeral').textContent = totalQ>0 ? Math.round((totalA/totalQ)*100)+'%' : '—';
+  perRev.forEach((r, i)=>{
+    const pct = r.q>0 ? Math.round((r.a/r.q)*100) : 0;
+    const barEl = document.getElementById('rcBar'+(i+1));
+    const pctEl = document.getElementById('rcPct'+(i+1));
+    if(barEl) barEl.style.width = pct+'%';
+    if(pctEl) pctEl.textContent = r.q>0 ? pct+'%' : '—';
+  });
+}
+
+function refreshAll(){
+  refreshProgress();
+  refreshStatsSummary();
+}
+
+document.getElementById('expandAll').addEventListener('click', ()=>{
+  document.querySelectorAll('details.section').forEach(d=>d.open=true);
+});
+document.getElementById('collapseAll').addEventListener('click', ()=>{
+  document.querySelectorAll('details.section').forEach(d=>d.open=false);
+});
+
+document.getElementById('filterSelect').addEventListener('change', (e)=>{
+  filterMode = e.target.value;
+  render();
+});
+document.getElementById('sortSelect').addEventListener('change', (e)=>{
+  sortMode = e.target.value;
+  render();
+});
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const payload = { exportedAt: new Date().toISOString(), items: state };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const stamp = new Date().toISOString().slice(0,10);
+  a.download = `progresso-pf-agente-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+const importInput = document.getElementById('importInput');
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  importInput.value = '';
+  importInput.click();
+});
+importInput.addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt)=>{
+    try{
+      const parsed = JSON.parse(evt.target.result);
+      const items = parsed.items || parsed;
+      let count = 0;
+      Object.keys(items).forEach(id=>{
+        if(state.hasOwnProperty(id)){
+          state[id] = Object.assign(defaultItemState(), items[id]);
+          saveState(id);
+          count++;
+        }
+      });
+      render();
+      alert(`Progresso importado: ${count} tópicos atualizados.`);
+    }catch(err){
+      alert('Não foi possível ler esse arquivo. Confira se é um JSON exportado por esta ferramenta.');
+    }
+  };
+  reader.readAsText(file);
+});
+
+const THEME_KEY = 'pf-edital:theme';
+const modeBtn = document.getElementById('modeToggle');
+const modeIcon = document.getElementById('modeIcon');
+
+const MOON_PATH = '<path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5z"></path>';
+const SUN_PATH = '<circle cx="12" cy="12" r="4.2"></circle>' +
+  '<g>' +
+  '<line x1="12" y1="1.5" x2="12" y2="4"></line>' +
+  '<line x1="12" y1="20" x2="12" y2="22.5"></line>' +
+  '<line x1="1.5" y1="12" x2="4" y2="12"></line>' +
+  '<line x1="20" y1="12" x2="22.5" y2="12"></line>' +
+  '<line x1="4.2" y1="4.2" x2="5.9" y2="5.9"></line>' +
+  '<line x1="18.1" y1="18.1" x2="19.8" y2="19.8"></line>' +
+  '<line x1="4.2" y1="19.8" x2="5.9" y2="18.1"></line>' +
+  '<line x1="18.1" y1="5.9" x2="19.8" y2="4.2"></line>' +
+  '</g>';
+
+function applyTheme(theme){
+  document.body.classList.toggle('light', theme === 'light');
+  modeIcon.innerHTML = theme === 'light' ? SUN_PATH : MOON_PATH;
+}
+
+async function loadTheme(){
+  if(hasStorage){
+    try{
+      const res = await window.storage.get(THEME_KEY);
+      return res ? res.value : 'dark';
+    }catch(e){ return 'dark'; }
+  }
+  return 'dark';
+}
+
+modeBtn.addEventListener('click', async ()=>{
+  const next = document.body.classList.contains('light') ? 'dark' : 'light';
+  applyTheme(next);
+  if(hasStorage){
+    try{ await window.storage.set(THEME_KEY, next); }catch(e){}
+  }
+});
+
+(async ()=>{
+  const theme = await loadTheme();
+  applyTheme(theme);
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
