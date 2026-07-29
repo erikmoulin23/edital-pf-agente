@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polícia Federal · Agente</title>
+<style>
+  :root{
+    --bg:#111318;
+    --panel:#171a21;
+    --panel-2:#1d212a;
+    --line:rgba(255,255,255,0.07);
+    --gold:#c9a15a;
+    --gold-soft:#a98a52;
+    --text:#e9e9ec;
+    --text-dim:#9497a3;
+    --text-faint:#5c6070;
+  }
+  body.light{
+    --bg:#faf8f4;
+    --panel:#ffffff;
+    --panel-2:#eee9de;
+    --line:rgba(20,20,20,0.09);
+    --gold:#a8763f;
+    --gold-soft:#8a6230;
+    --text:#232323;
+    --text-dim:#5c5c5c;
+    --text-faint:#8c8c8c;
+  }
+  body.light h1{color:#141414;}
+  body.light .sec-title{color:#141414;}
+  body.light .item.lvl1 .txt{color:#141414;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    min-height:100vh;
+    padding: 40px 20px 70px;
+    transition: background .25s ease, color .25s ease;
+  }
+  .mode-toggle{
+    position:fixed;
+    top:18px;
+    right:18px;
+    width:34px;height:34px;
+    border:none;
+    background:transparent;
+    color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    font-size:18px;
+    z-index:50;
+    opacity:0.75;
+    transition: opacity .2s ease;
+  }
+  .mode-toggle:hover{opacity:1;}
+  .wrap{max-width:780px;margin:0 auto;}
+
+  header{
+    margin-bottom:36px;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    margin:0 0 22px;
+    color:#fff;
+  }
+
+  .overall-row{
+    display:flex;align-items:center;gap:16px;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .overall-pct{
+    font-size:22px;font-weight:700;color:var(--gold);min-width:52px;
+  }
+  .overall-bar{
+    flex:1;height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;
+  }
+  .overall-bar>div{height:100%;background:var(--gold);transition:width .35s ease;}
+  .overall-label{font-size:12px;color:var(--text-dim);white-space:nowrap;}
+
+  .toolbar{
+    display:flex;gap:8px;margin:16px 0 8px;flex-wrap:wrap;
+  }
+  .toolbar button{
+    background:none;border:1px solid var(--line);color:var(--text-dim);
+    padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;
+  }
+  .toolbar button:hover{border-color:var(--gold-soft);color:var(--gold);}
+  .toolbar select{
+    background:var(--panel);border:1px solid var(--line);color:var(--text-dim);
+    font-size:12px;padding:6px 10px;border-radius:6px;cursor:pointer;
+  }
+  .toolbar select:hover{border-color:var(--gold-soft);}
+
+  .block-label{
+    font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--text-faint);
+    margin: 34px 0 12px;
+    padding-bottom:6px;
+    position:relative;
+    display:inline-block;
+    cursor:default;
+  }
+  .block-label:hover{color:var(--gold);}
+  .block-label:hover .info-tooltip{display:block;}
+  .block-label:first-of-type{margin-top:26px;}
+
+  details.section{
+    border-bottom:1px solid var(--line);
+  }
+  details.section summary{
+    list-style:none;
+    cursor:pointer;
+    padding:18px 0;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  details.section summary::-webkit-details-marker{display:none;}
+
+  .sec-title{
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:0.1px;
+    position:relative;
+    cursor:default;
+  }
+  .info-tooltip{
+    display:none;
+    position:absolute;
+    left:0;
+    top:26px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:9px 12px;
+    font-size:11.5px;
+    line-height:1.6;
+    color:var(--text-dim);
+    white-space:nowrap;
+    z-index:30;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    font-weight:400;
+  }
+  .info-tooltip b{color:var(--gold);}
+  .sec-title:hover .info-tooltip{display:block;}
+  .sec-meta{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .sec-count{font-size:11px;color:var(--text-faint);white-space:nowrap;}
+  .sec-pct{font-size:13px;color:var(--gold);font-weight:700;min-width:34px;text-align:right;}
+  .mini-bar{width:56px;height:3px;background:var(--panel-2);border-radius:2px;overflow:hidden;}
+  .mini-bar>div{height:100%;background:var(--gold);}
+  .chev{color:var(--text-faint);font-size:11px;transition:transform .2s;}
+  details[open] .chev{transform:rotate(90deg);}
+
+  .items{padding: 0 0 20px;}
+  .item{
+    padding:11px 0;
+    border-top:1px solid var(--line);
+  }
+  .item:first-child{border-top:none;}
+  .item-row{
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    align-items:start;
+    gap:8px 16px;
+  }
+
+  .txt{font-size:14px;line-height:1.5;color:var(--text);padding-top:3px;}
+  .num{color:var(--gold-soft);font-weight:600;margin-right:6px;font-variant-numeric:tabular-nums;vertical-align:middle;}
+  .inc-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    vertical-align:middle;
+    margin-right:6px;
+    position:relative;
+    top:-1px;
+  }
+  .inc-icon svg{display:block;}
+  .inc-icon.inc-high{color:#3fae6a;}
+  .inc-icon.inc-medium{color:#d4a63a;}
+  .inc-icon.inc-low{color:#c9564a;}
+  .item.lvl1 .txt{font-weight:600;color:#fff;}
+  .item.lvl2{padding-left:20px;}
+  .item.lvl2 .txt{color:#c7cad6;}
+  .item.lvl3{padding-left:40px;}
+  .item.lvl3 .txt{color:var(--text-dim);font-size:13px;}
+
+  body.light .item.lvl2 .txt{color:#3f4250;}
+  body.light .item.lvl3 .txt{color:#55586a;}
+
+  .checks{display:flex;gap:5px;padding-top:2px;}
+  .checks label{
+    width:24px;height:24px;border-radius:5px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    font-size:10px;color:var(--text-faint);
+    position:relative;
+  }
+  .checks input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;}
+  .checks label.on{background:var(--gold);border-color:var(--gold);color:#1d1607;font-weight:700;}
+  .checks label.primary{border-color:rgba(201,161,90,0.35);}
+
+  .results-toggle{
+    background:none;border:none;color:var(--text-faint);
+    font-size:12px;cursor:pointer;padding-top:4px;
+    display:flex;align-items:center;gap:4px;white-space:nowrap;
+  }
+  .results-toggle:hover{color:var(--gold);}
+  .results-toggle .chev{font-size:9px;transition:transform .15s;}
+  .results-toggle.open .chev{transform:rotate(180deg);}
+  .results-toggle.open{color:var(--gold);}
+
+  .results-panel{
+    display:none;
+    margin-top:10px;
+    padding:10px 12px;
+    background:var(--panel);
+    border-radius:6px;
+    border:1px solid var(--line);
+  }
+  .results-panel.open{display:flex;flex-direction:column;gap:8px;}
+  .results-row{display:flex;align-items:center;gap:10px;}
+  .results-row .rlabel{font-size:12px;color:var(--text-dim);width:66px;flex-shrink:0;}
+  .qa{display:flex;gap:5px;align-items:center;}
+  .qa input{
+    text-align:center;
+    background:var(--bg);border:1px solid var(--line);border-radius:5px;
+    color:var(--text);font-size:12.5px;padding:5px 4px;
+  }
+  .qa input.num-field{width:50px;}
+  .qa input.acertos-field{width:80px;}
+  .qa input::placeholder{color:var(--text-faint);}
+  .qa .slash{color:var(--text-faint);font-size:12px;}
+  .qa .pct{
+    font-size:12px;font-weight:700;color:var(--gold);
+    min-width:38px;text-align:right;
+  }
+
+  @media (max-width:600px){
+    .item-row{grid-template-columns:1fr;}
+    .checks{padding-top:0;}
+    .results-toggle{padding-top:4px;}
+    .toolbar{display:none;}
+  }
+
+  .stats-summary{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .stat-card{
+    background:var(--panel);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .stat-card .stat-label{font-size:11px;color:var(--text-dim);margin-bottom:4px;}
+  .stat-card .stat-value{font-size:19px;font-weight:700;color:var(--gold);}
+  .rev-compare{display:flex;flex-direction:column;gap:6px;}
+  .rev-compare-row{display:flex;align-items:center;gap:10px;}
+  .rev-compare-row .rc-label{font-size:11px;color:var(--text-dim);width:64px;flex-shrink:0;}
+  .rev-compare-row .rc-bar{flex:1;height:6px;background:var(--panel-2);border-radius:3px;overflow:hidden;}
+  .rev-compare-row .rc-bar>div{height:100%;background:var(--gold);}
+  .rev-compare-row .rc-pct{font-size:11px;color:var(--text-dim);width:34px;text-align:right;}
+
+  @media (max-width:600px){
+    .stats-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  .sec-title-wrap{display:flex;align-items:center;gap:8px;}
+  .badge-done{
+    font-size:11px;color:#3fae6a;font-weight:700;
+    display:inline-flex;align-items:center;gap:2px;
+  }
+
+  .acc-dot{
+    width:8px;height:8px;border-radius:50%;flex-shrink:0;
+    background:var(--text-faint);
+  }
+  .acc-dot.acc-good{background:#3fae6a;}
+  .acc-dot.acc-mid{background:#d4a63a;}
+  .acc-dot.acc-low{background:#c9564a;}
+
+  .last-reviewed{font-size:11px;color:var(--text-faint);white-space:nowrap;}
+
+  .notes-row{
+    border-top:1px solid var(--line);
+    padding-top:8px;
+    margin-top:2px;
+  }
+  .notes-row label{font-size:11px;color:var(--text-dim);display:block;margin-bottom:4px;}
+  .notes-row textarea{
+    width:100%;min-height:140px;resize:vertical;
+    background:var(--bg);border:1px solid var(--line);border-radius:5px;
+    color:var(--text);font-size:12.5px;padding:6px 8px;font-family:inherit;
+  }
+  .notes-row textarea::placeholder{color:var(--text-faint);}
+
+  /* ── RICH EDITOR ── */
+  .editor-toolbar{
+    display:flex;gap:4px;flex-wrap:wrap;
+    padding:4px 6px;border:1px solid var(--line);border-bottom:none;
+    border-radius:5px 5px 0 0;background:var(--panel-2);
+  }
+  .editor-toolbar button{
+    background:none;border:1px solid transparent;color:var(--text-dim);
+    padding:3px 7px;border-radius:4px;font-size:11px;cursor:pointer;
+    font-family:inherit;line-height:1.4;transition:all .15s;
+  }
+  .editor-toolbar button:hover{border-color:var(--line);color:var(--text);background:var(--bg);}
+  .editor-toolbar .sep{width:1px;background:var(--line);margin:2px 2px;align-self:stretch;}
+  .editor-content{
+    width:100%;min-height:120px;
+    background:var(--bg);border:1px solid var(--line);border-radius:0 0 5px 5px;
+    color:var(--text);font-size:12.5px;padding:7px 9px;font-family:inherit;
+    outline:none;line-height:1.7;
+    overflow-y:auto;
+  }
+  .editor-content:empty:before{content:attr(data-placeholder);color:var(--text-faint);pointer-events:none;}
+  .editor-content mark{background:#f5c518;color:#111;border-radius:2px;padding:0 1px;}
+  .editor-content mark.green{background:#4caf50;color:#fff;}
+  .editor-content mark.blue{background:#2196f3;color:#fff;}
+
+  /* ── ANEXOS ── */
+  .anexos-row{border-top:1px solid var(--line);padding-top:8px;margin-top:6px;}
+  .anexos-row label{font-size:11px;color:var(--text-dim);display:block;margin-bottom:6px;}
+  .anexos-list{display:flex;flex-direction:column;gap:5px;margin-bottom:6px;}
+  .anexo-item{
+    display:flex;align-items:center;gap:8px;
+    background:var(--panel-2);border:1px solid var(--line);border-radius:5px;
+    padding:6px 10px;font-size:12px;
+  }
+  .anexo-icon{font-size:14px;flex-shrink:0;}
+  .anexo-name{flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .anexo-open{
+    font-size:11px;color:var(--gold);background:none;border:none;cursor:pointer;
+    padding:2px 6px;border-radius:3px;flex-shrink:0;
+  }
+  .anexo-open:hover{background:rgba(201,161,90,0.15);}
+  .anexo-del{
+    font-size:13px;color:var(--text-faint);background:none;border:none;cursor:pointer;
+    padding:2px 5px;flex-shrink:0;line-height:1;
+  }
+  .anexo-del:hover{color:#c9564a;}
+  .anexo-add-btn{
+    display:flex;align-items:center;gap:6px;
+    background:none;border:1px dashed var(--line);color:var(--text-dim);
+    padding:6px 12px;border-radius:5px;font-size:12px;cursor:pointer;width:100%;
+    transition:all .15s;
+  }
+  .anexo-add-btn:hover{border-color:var(--gold-soft);color:var(--gold);}
+  .anexo-input{display:none;}
+
+  /* ── PLANO DE ESTUDOS ── */
+  #planoView{display:none;margin-top:8px;}
+  #planoView.active{display:block;}
+  .plano-tabs{display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:10px;}
+  .plano-tab{background:none;border:1px solid var(--line);color:var(--text-dim);padding:7px 18px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;transition:all .2s;}
+  .plano-tab.active{background:var(--gold);color:#111;border-color:var(--gold);}
+  .plano-tab:hover:not(.active){border-color:var(--gold-soft);color:var(--gold);}
+  .plano-panel{display:none;}
+  .plano-panel.active{display:block;}
+
+  /* macro */
+  .macro-progress{background:var(--panel-2);border-radius:10px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+  .macro-pct{font-size:22px;font-weight:700;color:var(--gold);min-width:52px;}
+  .macro-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+  .macro-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s ease;}
+  .macro-label{font-size:12px;color:var(--text-dim);white-space:nowrap;}
+
+  .mes-card{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+  .mes-header{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--panel);user-select:none;}
+  .mes-header:hover{background:var(--panel-2);}
+  .mes-num{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
+  .mes-titulo{font-size:14px;font-weight:700;color:var(--text);flex:1;}
+  .mes-periodo{font-size:11px;color:var(--text-faint);white-space:nowrap;}
+  .mes-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;}
+  .mes-check.done{background:#1e7e4a;border-color:#1e7e4a;}
+  .mes-check svg{display:none;}
+  .mes-check.done svg{display:block;}
+  .mes-chev{color:var(--text-faint);font-size:10px;transition:transform .2s;}
+  .mes-card.open .mes-chev{transform:rotate(90deg);}
+  .mes-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line);background:var(--panel);}
+  .mes-card.open .mes-body{display:block;}
+  .mes-objetivo{font-size:12.5px;color:var(--text-dim);line-height:1.6;padding:10px 0 8px;border-bottom:1px solid var(--line);margin-bottom:10px;}
+  .mes-topicos{list-style:none;padding:0;margin:0 0 10px;}
+  .mes-topicos li{font-size:12px;color:var(--text-dim);padding:4px 0;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+  .mes-topicos li:last-child{border:none;}
+  .inc-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+  .inc-tag.alta{background:rgba(63,174,106,0.18);color:#3fae6a;}
+  .inc-tag.media{background:rgba(212,166,58,0.18);color:#d4a63a;}
+  .inc-tag.baixa{background:rgba(201,86,74,0.18);color:#c9564a;}
+  .inc-tag.nova{background:rgba(100,149,237,0.18);color:#6495ed;}
+  .mes-footer{font-size:11px;color:var(--text-faint);display:flex;gap:16px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line);}
+  .mes-footer span b{color:var(--text-dim);}
+  .mes-alerta{font-size:11.5px;background:rgba(201,161,90,0.1);border-left:3px solid var(--gold);padding:7px 10px;border-radius:0 5px 5px 0;color:var(--text-dim);margin-top:8px;line-height:1.5;}
+
+  /* semanas */
+  .sem-progress{background:var(--panel-2);border-radius:10px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+  .sem-card{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+  .sem-header{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--panel);user-select:none;}
+  .sem-header:hover{background:var(--panel-2);}
+  .sem-num{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
+  .sem-titulo{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+  .sem-datas{font-size:11px;color:var(--text-faint);white-space:nowrap;}
+  .sem-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;}
+  .sem-check.done{background:#1e7e4a;border-color:#1e7e4a;}
+  .sem-check svg{display:none;}
+  .sem-check.done svg{display:block;}
+  .sem-chev{color:var(--text-faint);font-size:10px;transition:transform .2s;}
+  .sem-card.open .sem-chev{transform:rotate(90deg);}
+
+  /* check por dia */
+  .dia-check-wrap{display:flex;align-items:center;gap:7px;}
+  .dia-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .2s;padding:0;}
+  .dia-check:hover{border-color:var(--gold);}
+  .dia-check.done{background:#1e7e4a;border-color:#1e7e4a;}
+  .dia-check svg{display:none;width:11px;height:11px;}
+  .dia-check.done svg{display:block;}
+  .tachado{text-decoration:line-through;color:var(--text-faint)!important;opacity:0.6;}
+  tr.dia-done td{opacity:0.55;}
+  .sem-mini-count{font-size:11px;font-weight:700;color:var(--gold);white-space:nowrap;min-width:32px;text-align:right;}
+  .sem-header.all-done .sem-titulo{color:#3fae6a;}
+  .sem-header.all-done .sem-mini-count{color:#3fae6a;}
+  .sem-chev{color:var(--text-faint);font-size:10px;transition:transform .2s;}
+  .sem-card.open .sem-chev{transform:rotate(90deg);}
+  .sem-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line);background:var(--panel);}
+  .sem-card.open .sem-body{display:block;}
+  .sem-tema{font-size:12px;color:var(--gold-soft);font-style:italic;padding:8px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+  .dias-table{width:100%;border-collapse:collapse;margin-bottom:10px;}
+  .dias-table th{font-size:10px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;}
+  .dias-table td{font-size:12px;color:var(--text-dim);padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+  .dias-table tr.qui td{color:var(--text-faint);font-style:italic;}
+  .dias-table tr:last-child td{border:none;}
+  .dia-label{font-weight:700;color:var(--text);white-space:nowrap;}
+  .sem-footer{font-size:11px;color:var(--text-faint);padding-top:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px;}
+  .sem-footer span b{color:var(--text-dim);}
+  .sem-alerta{font-size:11.5px;background:rgba(201,161,90,0.1);border-left:3px solid var(--gold);padding:7px 10px;border-radius:0 5px 5px 0;color:var(--text-dim);margin-top:8px;line-height:1.5;}
+  .checkmark-svg{width:13px;height:13px;stroke:white;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+</head>
+<body>
+<button class="mode-toggle" id="modeToggle" title="Alternar modo claro/escuro" aria-label="Alternar modo claro/escuro">
+  <svg id="modeIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5z"></path>
+  </svg>
+</button>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Edital Verticalizado</div>
+    <h1>Polícia Federal · Agente</h1>
+    <div class="overall-row">
+      <div class="overall-pct" id="overallPct">0%</div>
+      <div class="overall-bar"><div id="overallBar" style="width:0%"></div></div>
+      <div class="overall-label" id="overallLabel">0 / 0 tópicos</div>
+    </div>
+
+    <div class="stats-summary">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Questões respondidas</div>
+          <div class="stat-value" id="statTotalQ">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Acertos</div>
+          <div class="stat-value" id="statTotalA">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">% de acerto geral</div>
+          <div class="stat-value" id="statPctGeral">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button id="expandAll">Expandir tudo</button>
+      <button id="collapseAll">Recolher tudo</button>
+      <select id="filterSelect">
+        <option value="all">Mostrar: todas</option>
+        <option value="high">Mostrar: Incidência Alta</option>
+        <option value="medium">Mostrar: Incidência Média</option>
+        <option value="low">Mostrar: Incidência Baixa</option>
+      </select>
+      <button id="btnPlano" style="margin-left:auto;background:var(--gold);color:#111;border:none;font-weight:700;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Plano de Estudos
+      </button>
+    </div>
+  </header>
+
+  <div id="app"></div>
+
+  <!-- ══ PLANO DE ESTUDOS ══ -->
+  <div id="planoView">
+    <div class="plano-tabs">
+      <button class="plano-tab active" data-tab="semanas">📅 4 Semanas (detalhado)</button>
+      <button class="plano-tab" data-tab="macro">🗓 6 Meses (macro)</button>
+    </div>
+
+    <!-- ── PAINEL SEMANAS ── -->
+    <div class="plano-panel active" id="panelSemanas">
+      <div class="sem-progress">
+        <div class="macro-pct" id="semPct">0%</div>
+        <div class="macro-bar-wrap"><div class="macro-bar-fill" id="semBar" style="width:0%"></div></div>
+        <div class="macro-label" id="semLabel">0 / 4 semanas concluídas</div>
+      </div>
+      <div id="semanasContainer"></div>
+    </div>
+
+    <!-- ── PAINEL MACRO ── -->
+    <div class="plano-panel" id="panelMacro">
+      <div class="macro-progress">
+        <div class="macro-pct" id="macroPct">0%</div>
+        <div class="macro-bar-wrap"><div class="macro-bar-fill" id="macroBar" style="width:0%"></div></div>
+        <div class="macro-label" id="macroLabel">0 / 6 meses concluídos</div>
+      </div>
+      <div id="macroContainer"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// [level, number, text]
+const DATA = [
+{ block:"BLOCO I", subject:"Língua Portuguesa", items:[
+ [1,"1","Compreensão e interpretação de textos de gêneros variados."],
+ [1,"2","Reconhecimento de tipos e gêneros textuais."],
+ [1,"3","Domínio da ortografia oficial."],
+ [1,"4","Domínio dos mecanismos de coesão textual."],
+ [2,"4.1","Emprego de elementos de referenciação, substituição e repetição, de conectores e de outros elementos de sequenciação textual."],
+ [2,"4.2","Emprego de tempos e modos verbais."],
+ [1,"5","Domínio da estrutura morfossintática do período."],
+ [2,"5.1","Emprego das classes de palavras."],
+ [2,"5.2","Relações de coordenação entre orações e entre termos da oração."],
+ [2,"5.3","Relações de subordinação entre orações e entre termos da oração."],
+ [2,"5.4","Emprego dos sinais de pontuação."],
+ [2,"5.5","Concordância verbal e nominal."],
+ [2,"5.6","Regência verbal e nominal."],
+ [2,"5.7","Emprego do sinal indicativo de crase."],
+ [2,"5.8","Colocação dos pronomes átonos."],
+ [1,"6","Reescrita de frases e parágrafos do texto."],
+ [2,"6.1","Significação das palavras."],
+ [2,"6.2","Substituição de palavras ou de trechos de texto."],
+ [2,"6.3","Reorganização da estrutura de orações e de períodos do texto."],
+ [2,"6.4","Reescrita de textos de diferentes gêneros e níveis de formalidade."],
+ [1,"7","Correspondência oficial (conforme Manual de Redação da Presidência da República)."],
+ [2,"7.1","Aspectos gerais da redação oficial."],
+ [2,"7.2","Finalidade dos expedientes oficiais."],
+ [2,"7.3","Adequação da linguagem ao tipo de documento."],
+ [2,"7.4","Adequação do formato do texto ao gênero."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Administrativo", items:[
+ [1,"1","Noções de organização administrativa."],
+ [2,"1.1","Centralização, descentralização, concentração e desconcentração."],
+ [2,"1.2","Administração direta e indireta."],
+ [2,"1.3","Autarquias, fundações, empresas públicas e sociedades de economia mista."],
+ [1,"2","Ato administrativo."],
+ [2,"2.1","Conceito, requisitos, atributos, classificação e espécies."],
+ [1,"3","Agentes públicos."],
+ [2,"3.1","Legislação pertinente."],
+ [3,"3.1.1","Lei nº 8.112/1990 e suas alterações."],
+ [3,"3.1.2","Disposições constitucionais aplicáveis."],
+ [2,"3.2","Disposições doutrinárias."],
+ [3,"3.2.1","Conceito."],
+ [3,"3.2.2","Espécies."],
+ [3,"3.2.3","Cargo, emprego e função pública."],
+ [1,"4","Poderes administrativos."],
+ [2,"4.1","Hierárquico, disciplinar, regulamentar e de polícia."],
+ [2,"4.2","Uso e abuso do poder."],
+ [1,"5","Licitação."],
+ [2,"5.1","Princípios."],
+ [2,"5.2","Contratação direta: dispensa e inexigibilidade."],
+ [2,"5.3","Modalidades."],
+ [2,"5.4","Tipos."],
+ [2,"5.5","Procedimento."],
+ [1,"6","Controle da Administração Pública."],
+ [2,"6.1","Controle exercido pela Administração Pública."],
+ [2,"6.2","Controle judicial."],
+ [2,"6.3","Controle legislativo."],
+ [1,"7","Responsabilidade civil do Estado."],
+ [2,"7.1","Responsabilidade civil do Estado no direito brasileiro."],
+ [3,"7.1.1","Responsabilidade por ato comissivo do Estado."],
+ [3,"7.1.2","Responsabilidade por omissão do Estado."],
+ [2,"7.2","Requisitos para a demonstração da responsabilidade do Estado."],
+ [2,"7.3","Causas excludentes e atenuantes da responsabilidade do Estado."],
+ [1,"8","Regime jurídico-administrativo."],
+ [2,"8.1","Conceito."],
+ [2,"8.2","Princípios expressos e implícitos da Administração Pública."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Constitucional", items:[
+ [1,"1","Direitos e garantias fundamentais: direitos e deveres individuais e coletivos; direito à vida, à liberdade, à igualdade, à segurança e à propriedade; direitos sociais; nacionalidade; cidadania e direitos políticos; partidos políticos; garantias constitucionais individuais; garantias dos direitos coletivos, sociais e políticos."],
+ [1,"2","Poder Executivo: forma e sistema de governo; chefia de Estado e chefia de governo."],
+ [1,"3","Defesa do Estado e das instituições democráticas: segurança pública; organização da segurança pública."],
+ [1,"4","Ordem social: base e objetivos da ordem social; seguridade social; meio ambiente; família, criança, adolescente, idoso, indígenas."],
+]},
+{ block:"BLOCO I", subject:"Noções de Direito Penal e Processual Penal", items:[
+ [1,"1","Princípios básicos."],
+ [1,"2","Aplicação da lei penal."],
+ [2,"2.1","A lei penal no tempo e no espaço."],
+ [2,"2.2","Tempo e lugar do crime."],
+ [2,"2.3","Territorialidade e extraterritorialidade da lei penal."],
+ [1,"3","O fato típico e seus elementos."],
+ [2,"3.1","Crime consumado e tentado."],
+ [2,"3.2","Ilicitude e causas de exclusão."],
+ [2,"3.3","Excesso punível."],
+ [1,"4","Crimes contra a pessoa."],
+ [1,"5","Crimes contra o patrimônio."],
+ [1,"6","Crimes contra a fé pública."],
+ [1,"7","Crimes contra a Administração Pública."],
+ [1,"8","Inquérito policial."],
+ [2,"8.1","Histórico, natureza, conceito, finalidade, características, fundamento, titularidade, grau de cognição, valor probatório, formas de instauração, notitia criminis, delatio criminis, procedimentos investigativos, indiciamento, garantias do investigado; conclusão."],
+ [1,"9","Prova."],
+ [2,"9.1","Preservação de local de crime."],
+ [2,"9.2","Requisitos e ônus da prova."],
+ [2,"9.3","Nulidade da prova."],
+ [2,"9.4","Documentos de prova."],
+ [2,"9.5","Reconhecimento de pessoas e coisas."],
+ [2,"9.6","Acareação."],
+ [2,"9.7","Indícios."],
+ [2,"9.8","Busca e apreensão."],
+ [1,"10","Restrição de liberdade."],
+ [2,"10.1","Prisão em flagrante."],
+]},
+{ block:"BLOCO I", subject:"Direitos Humanos", items:[
+ [1,"1","Direitos humanos na Constituição Federal de 1988."],
+ [1,"2","Sistema internacional de proteção dos direitos humanos."],
+ [1,"3","Convenção para a Prevenção e Punição ao Crime de Genocídio."],
+ [1,"4","Convenção Relativa ao Estatuto dos Refugiados. Protocolo sobre o Estatuto dos Refugiados."],
+ [1,"5","Convenção sobre a Eliminação de Todas as Formas de Discriminação Racial."],
+ [1,"6","Convenção sobre a Eliminação de Todas as Formas de Discriminação contra a Mulher."],
+ [1,"7","Convenção contra a Tortura e Outros Tratamentos ou Penas Cruéis, Desumanos ou Degradantes."],
+ [1,"8","Convenção Internacional para a Proteção de Todas as Pessoas contra o Desaparecimento Forçado."],
+ [1,"9","Regras mínimas da ONU para o tratamento de pessoas presas."],
+ [1,"10","Princípios Básicos sobre o Uso da Força e Armas de Fogo (8º Congresso da ONU, Havana, Cuba, 27/08 a 07/09/1990)."],
+ [1,"11","Lei nº 13.060/2014 - Disciplina o uso dos instrumentos de menor potencial ofensivo pelos agentes de segurança pública."],
+ [1,"12","Decreto nº 12.341/2024 - Regulamenta a Lei nº 13.060/2014."],
+]},
+{ block:"BLOCO I", subject:"Legislação Especial", items:[
+ [1,"1","Lei 14.967/2024 (Estatuto da Segurança Privada e da Segurança das Instituições Financeiras)"],
+ [1,"2","Lei nº 10.357/2001 (Normas de controle e fiscalização de produtos químicos)"],
+ [1,"3","Lei nº 13.445/2017 (Lei de migração)"],
+ [1,"4","Lei nº 11.343/2006 (repressão ao tráfico ilícito de drogas) e alterações"],
+ [1,"5","Lei nº 9.455/1997 (crimes de tortura) e alterações"],
+ [1,"6","Lei nº 8.069/1990 (ECA) e alterações"],
+ [1,"7","Lei nº 10.826/2003 (registro, posse e comercialização de arma de fogo) e alterações"],
+ [1,"8","Lei nº 9.605/1998 (infrações ambientais) e alterações"],
+ [1,"9","Lei nº 10.446/2002 (infrações de repercussão interestadual ou internacional) e alterações"],
+ [1,"10","Lei nº 13.444/2017 (Identificação Civil Nacional)"],
+ [1,"11","Lei nº 14.534/2023 (adota CPF como nº identificação)"],
+ [1,"12","Lei nº 7.116/1983 (Carteira de Identidade) e Decreto nº 10.977/2022"],
+ [1,"13","Decreto nº 11.797/2023 (serviço de identificação do cidadão)"],
+ [1,"14","Lei nº 9.545/1997 (institui o número único de registro de identidade civil)"],
+ [1,"15","Decreto nº 11.491/2023 (Convenção sobre o Crime Cibernético)"],
+]},
+{ block:"BLOCO I", subject:"Estatística", items:[
+ [1,"1","Estatística descritiva e análise exploratória de dados: gráficos, diagramas, tabelas, medidas descritivas (posição, dispersão, assimetria e curtose)"],
+ [1,"2","Probabilidade"],
+ [2,"2.1","Probabilidade e Probabilidade Condicional"],
+ [2,"2.2","Conceitos básicos de probabilidade"],
+ [2,"2.3","Cálculo de probabilidades condicionais"],
+ [2,"2.4","Definições básicas e axiomas"],
+ [2,"2.5","Probabilidade condicional e independência"],
+ [2,"2.6","Variáveis aleatórias discretas e contínuas"],
+ [2,"2.7","Distribuição de probabilidades"],
+ [2,"2.8","Função de probabilidade"],
+ [2,"2.9","Função densidade de probabilidade"],
+ [2,"2.10","Esperança e momentos"],
+ [2,"2.11","Distribuições especiais"],
+ [2,"2.12","Distribuições condicionais e independência"],
+ [2,"2.13","Transformação de variáveis"],
+ [2,"2.14","Leis dos grandes números"],
+ [2,"2.15","Teorema central do limite"],
+ [2,"2.16","Amostras aleatórias"],
+ [2,"2.17","Distribuições amostrais"],
+ [2,"2.18","Independência de Eventos, Regra de Bayes e Teorema da Probabilidade Total"],
+ [2,"2.19","Conceito de independência"],
+ [2,"2.20","Aplicação da regra de Bayes"],
+ [2,"2.21","Uso do teorema da probabilidade total"],
+ [2,"2.21","Variáveis Aleatórias e Funções de Probabilidade"],
+ [3,"2.21.1","Definição e exemplos de variáveis aleatórias"],
+ [3,"2.21.2","Função de probabilidade (para variáveis discretas) e função densidade de probabilidade (para variáveis contínuas)"],
+ [2,"2.22","Principais Distribuições de Probabilidade Discretas e Contínuas"],
+ [3,"2.22.1","Distribuição uniforme"],
+ [3,"2.22.2","Distribuição de Bernoulli"],
+ [3,"2.22.3","Distribuição binomial"],
+ [3,"2.22.4","Distribuição normal"],
+ [2,"2.23","Medidas de Tendência Central"],
+ [3,"2.23.1","Média (aritmética, ponderada, geométrica e harmônica)"],
+ [3,"2.23.2","Mediana"],
+ [3,"2.23.3","Moda"],
+ [2,"2.24","Medidas de Dispersão"],
+ [3,"2.24.1","Amplitude"],
+ [3,"2.24.2","Variância"],
+ [3,"2.24.3","Desvio padrão"],
+ [3,"2.24.4","Coeficiente de variação"],
+ [2,"2.25","Coeficiente de Correlação de Pearson"],
+ [3,"2.25.1","Conceito e cálculo da correlação entre duas variáveis"],
+ [2,"2.26","Teorema Central do Limite"],
+ [3,"2.26.1","Importância do teorema para a distribuição amostral da média"],
+ [2,"2.27","Regra Empírica (Regra dos Três Sigma) da Distribuição Normal"],
+ [3,"2.27.1","Aproximação da dispersão dos dados na distribuição normal"],
+ [2,"2.28","Técnicas de Amostragem"],
+ [2,"2.29","Amostragem aleatória simples, estratificada, sistemática e por conglomerados"],
+ [3,"2.29.1","Conceitos básicos para determinação do tamanho amostral"],
+ [1,"3","Inferência estatística"],
+ [2,"3.1","Estimação pontual: métodos de estimação, propriedades dos estimadores, suficiência"],
+ [2,"3.2","Estimação intervalar: intervalos de confiança, intervalos de credibilidade"],
+ [2,"3.3","Testes de hipóteses: hipóteses simples e compostas, níveis de significância e potência de um teste, teste t de Student, teste qui-quadrado"],
+ [1,"4","Análise de regressão linear"],
+ [2,"4.1","Critérios de mínimos quadrados e de máxima verossimilhança"],
+ [2,"4.2","Modelos de regressão linear"],
+ [2,"4.3","Inferência sobre os parâmetros do modelo"],
+ [2,"4.4","Análise de variância"],
+ [2,"4.5","Análise de resíduos"],
+ [1,"5","Técnicas de amostragem: amostragem aleatória simples, estratificada, sistemática e por conglomerados"],
+ [2,"5.1","Tamanho amostral"],
+]},
+{ block:"BLOCO I", subject:"Raciocínio Lógico", items:[
+ [1,"1","Estruturas lógicas."],
+ [1,"2","Lógica de argumentação: analogias, inferências, deduções e conclusões."],
+ [1,"3","Lógica sentencial (ou proposicional)."],
+ [2,"3.1","Proposições simples e compostas."],
+ [2,"3.2","Tabelas verdade."],
+ [2,"3.3","Equivalências."],
+ [2,"3.4","Leis de Morgan."],
+ [2,"3.5","Diagramas lógicos."],
+ [1,"4","Lógica de primeira ordem."],
+ [1,"5","Princípios de contagem e probabilidade."],
+ [1,"6","Operações com conjuntos."],
+ [1,"7","Raciocínio lógico envolvendo problemas aritméticos, geométricos e matriciais."],
+]},
+{ block:"BLOCO II", subject:"Informática", items:[
+ [1,"1","Conceito de internet e intranet."],
+ [1,"2","Conceitos e modos de utilização de tecnologias, ferramentas, aplicativos e procedimentos associados a internet/intranet."],
+ [2,"2.1","Ferramentas e aplicativos comerciais de navegação, de correio eletrônico, de grupos de discussão, de busca, de pesquisa e de redes sociais."],
+ [2,"2.2","Noções de sistema operacional (ambiente Linux e Windows)."],
+ [2,"2.3","Acesso à distância a computadores, transferência de informação e arquivos, aplicativos de áudio, vídeo e multimídia."],
+ [2,"2.4","Edição de textos, planilhas e apresentações (ambientes Microsoft Office e LibreOffice)."],
+ [1,"3","Redes de computadores."],
+ [2,"3.1","Formação de endereços IPV4 e IPV6."],
+ [1,"4","Conceitos de proteção e segurança."],
+ [2,"4.1","Noções de vírus, worms e pragas virtuais."],
+ [2,"4.2","Aplicativos para segurança (antivírus, firewall, anti-spyware etc.)."],
+ [1,"5","Computação na nuvem (cloud computing)."],
+ [1,"6","Fundamentos da Teoria Geral de Sistemas."],
+ [2,"6.1","Camadas de Aplicação, processos, frontend, backend."],
+ [1,"7","Sistemas de informação."],
+ [2,"7.1","Fases e etapas de sistema de informação."],
+ [2,"7.2","Análise de requisitos, especificação, ambientes de testes, homologação, produção e suporte."],
+ [1,"8","Teoria da informação."],
+ [2,"8.1","Conceitos de informação, dados, representação de dados, de conhecimentos, segurança e inteligência."],
+ [1,"9","Banco de dados."],
+ [2,"9.1","Base de dados, documentação e prototipação."],
+ [2,"9.2","Modelagem conceitual: abstração, modelo entidade-relacionamento, análise funcional e administração de dados."],
+ [2,"9.3","Dados estruturados e não estruturados."],
+ [2,"9.4","Banco de dados relacionais: conceitos básicos e características."],
+ [2,"9.5","Chaves e relacionamentos."],
+ [2,"9.6","Noções de mineração de dados: conceituação e características."],
+ [2,"9.7","Noções de aprendizado de máquina."],
+ [2,"9.8","Noções de Big data: conceito, premissas e aplicação."],
+ [1,"10","Redes de comunicação."],
+ [2,"10.1","Introdução a redes (computação/telecomunicações)."],
+ [2,"10.2","Camada física, de enlace de dados e subcamada de acesso ao meio."],
+ [2,"10.3","Noções básicas de transmissão de dados: tipos de enlace, códigos, modos e meios de transmissão."],
+ [1,"11","Redes de computadores: locais, metropolitanas e de longa distância."],
+ [2,"11.1","Terminologia e aplicações, topologias, modelos de arquitetura (OSI/ISO e TCP/IP) e protocolos."],
+ [2,"11.2","Interconexão de redes, nível de transporte."],
+ [1,"12","Noções de programação Python e R."],
+ [1,"13","Metadados de arquivos."],
+ [1,"14","Formatos de arquivos de intercâmbio entre sistemas biométricos: NIST, XML, JSON."],
+ [1,"15","Testes de acurácia do NIST.GOV."],
+ [2,"15.1","Conceitos de falso positivo e falso negativo (FPIR e FNIR)."],
+ [1,"16","Inteligência Artificial (IA)."],
+ [2,"16.1","Conceitos de Machine Learning."],
+ [2,"16.2","Principais ferramentas de mercado (Copilot, ChatGPT, META)."],
+ [1,"17","Tecnologias, Ferramentas e Aplicativos."],
+ [2,"17.1","Noções de sistema operacional (ambiente Linux e Windows)."],
+ [2,"17.2","Noções de acesso remoto a computadores, transferência de arquivos, comunicação multimídia e colaboração online (Microsoft Teams)."],
+ [1,"18","Noções de Redes e Comunicação."],
+ [2,"18.1","Conceito de Internet e Intranet."],
+ [2,"18.2","Noções de arquitetura e princípios de funcionamento das redes."],
+ [2,"18.3","Tipos de redes: locais (LAN), metropolitanas (MAN) e de longa distância (WAN)."],
+ [2,"18.4","Modelo OSI/ISO e modelo TCP/IP: camadas, funções e protocolos associados."],
+ [2,"18.5","Protocolos de comunicação: Ethernet, IP (IPv4 e IPv6), TCP, UDP, DNS, DHCP e SNMP."],
+ [2,"18.6","Protocolos e mecanismos de segurança: VPN, SSL/TLS."],
+ [2,"18.7","Redes sem fio: padrões IEEE 802.11, WPA/WPA2, segurança e boas práticas."],
+ [1,"19","Noções de Computação em Nuvem."],
+ [2,"19.1","Definição e características das nuvens privadas e públicas."],
+ [2,"19.2","Modelos de Serviço em Nuvem: Infraestrutura como Serviço (IaaS), Plataforma como Serviço (PaaS) e Software como Serviço (SaaS)."],
+ [1,"20","Conceitos de Proteção e Segurança."],
+ [2,"20.1","Ameaças digitais e malwares: noções de vírus, worms, trojans, ransomware, spyware, rootkits, botnets e outras pragas virtuais."],
+ [2,"20.2","Ferramentas e técnicas de segurança: uso de antivírus, firewall, anti-spyware e autenticação multifator (MFA)."],
+ [2,"20.3","Noções de criptografia e proteção de dados: hash criptográfico (MD5, SHA-1, SHA-256), assinaturas digitais."],
+ [2,"20.4","Noções de Controle de acesso e autenticação."],
+ [1,"21","Dados."],
+ [2,"21.1","Banco de dados relacionais: conceitos básicos e características."],
+ [2,"21.2","Noções de linguagem SQL."],
+ [2,"21.3","Modelagem conceitual: entidades, atributos e relacionamentos."],
+ [2,"21.4","Dados estruturados e não estruturados."],
+ [2,"21.5","Conceito de DataWarehouse, DataMart, DataLake, DataMesh."],
+ [2,"21.6","Metadados."],
+ [1,"22","Noções de análise de dados."],
+ [2,"22.1","Mineração de dados: conceituação e características."],
+ [2,"22.2","Noções de Business Intelligence: Ferramentas e aplicabilidade."],
+ [2,"22.3","Noções de aprendizado de máquina, inteligência artificial."],
+ [2,"22.4","Noções de big data: conceito, premissas e aplicação."],
+ [1,"23","Noções de Programação e Interoperabilidade."],
+ [2,"23.1","Noções de programação em Python."],
+ [2,"23.2","Conceito de API (Application Programming Interface)."],
+ [2,"23.3","ETL/ELT (Extract, Transform, Load)."],
+]},
+{ block:"BLOCO III", subject:"Contabilidade Geral", items:[
+ [1,"1","Conceitos, objetivos e finalidades da contabilidade."],
+ [1,"2","Patrimônio: componentes, equação fundamental do patrimônio, situação líquida, representação gráfica."],
+ [1,"3","Atos e fatos administrativos: conceitos, fatos permutativos, modificativos e mistos."],
+ [1,"4","Contas: conceitos, contas de débitos, contas de créditos e saldos."],
+ [1,"5","Plano de contas: conceitos, elenco de contas, função e funcionamento das contas."],
+ [1,"6","Escrituração: conceitos, lançamentos contábeis, elementos essenciais, fórmulas de lançamentos, livros de escrituração, métodos e processos, regime de competência e regime de caixa."],
+ [1,"7","Contabilização de operações contábeis diversas: juros, descontos, tributos, aluguéis, variação monetária/cambial, folha de pagamento, compras, vendas e provisões, depreciações e baixa de bens."],
+ [1,"8","Balancete de verificação: conceitos, modelos e técnicas de elaboração."],
+ [1,"9","Balanço patrimonial: conceitos, objetivo, composição."],
+ [1,"10","Demonstração de resultado de exercício: conceito, objetivo, composição."],
+ [1,"11","Lei nº 6.404/1976 e suas alterações, legislação complementar e pronunciamentos do CPC."],
+ [1,"12","Norma Brasileira de Contabilidade - NBC TSP Estrutura Conceitual, de 23/09/2016."],
+]},
+];
+
+// Marcação de incidência histórica (Cebraspe / provas anteriores da PF), por matéria e número do tópico.
+// Baseado em levantamentos de estatística de cobrança (Estratégia, Direção Concursos, TecConcursos).
+const INCIDENCE = {
+  "Língua Portuguesa": {"1":"high","2":"medium","3":"low","4":"medium","5":"medium","6":"high","7":"high"},
+  "Noções de Direito Administrativo": {"1":"medium","2":"medium","3":"medium","4":"medium","5":"high","6":"medium","7":"medium","8":"medium"},
+  "Noções de Direito Constitucional": {"1":"high","2":"medium","3":"high","4":"low"},
+  "Noções de Direito Penal e Processual Penal": {"1":"medium","2":"medium","3":"medium","4":"medium","5":"medium","6":"medium","7":"medium","8":"high","9":"medium","10":"high"},
+  "Direitos Humanos": {"1":"medium","11":"high","12":"high"},
+  "Legislação Especial": {"4":"high","6":"medium","7":"high"},
+  "Estatística": {"1":"medium","2":"high","3":"high","4":"low","5":"medium"},
+  "Raciocínio Lógico": {"1":"medium","2":"medium","3":"high","4":"low","5":"high","6":"medium","7":"medium"},
+  "Informática": {"1":"high","2":"medium","3":"high","4":"medium","5":"medium","6":"high","7":"high","8":"medium","9":"medium","10":"medium","11":"medium","12":"low","13":"low","14":"low","15":"low","16":"medium","17":"medium","18":"high","19":"medium","20":"medium","21":"medium","22":"medium","23":"medium"},
+  "Contabilidade Geral": {"1":"high","2":"medium","3":"medium","4":"medium","5":"medium","6":"high","7":"medium","8":"medium","9":"high","10":"medium","11":"low","12":"low"}
+};
+const INC_SYMBOL = {
+  high: '<svg viewBox="0 0 16 16" width="12" height="12"><polygon points="8,3 14,13 2,13" fill="currentColor"/></svg>',
+  medium: '<svg viewBox="0 0 16 16" width="12" height="12"><rect x="2" y="5" width="12" height="2.4" rx="1" fill="currentColor"/><rect x="2" y="9.6" width="12" height="2.4" rx="1" fill="currentColor"/></svg>',
+  low: '<svg viewBox="0 0 16 16" width="12" height="12"><polygon points="8,13 2,3 14,3" fill="currentColor"/></svg>'
+};
+const INC_LABEL = { high:'alta', medium:'média', low:'baixa' };
+
+function getIncidence(subject, number){
+  const map = INCIDENCE[subject];
+  if(!map) return null;
+  if(map[number]) return map[number];
+  const top = number.split('.')[0];
+  return map[top] || null;
+}
+
+const BLOCO_INFO = {
+  "BLOCO I": "60 questões (50% da prova)",
+  "BLOCO II": "36 questões (30% da prova)",
+  "BLOCO III": "24 questões (20% da prova)"
+};
+
+let uid = 0;
+DATA.forEach(sec=>{ sec.items.forEach(it=>{ it.push('i'+(uid++)); }); });
+
+const STORAGE_PREFIX = 'pf-edital:';
+const state = {};
+
+// URL do Apps Script (Google Sheets) usada como banco de dados compartilhado entre aparelhos.
+const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwmWcw9YGe8RSVTXEfn0gJH_CLC2bcP6JoiaAo75v70EiBFU7adS2rzIZVX-l9sERFQdQ/exec';
+const hasSheetApi = !!SHEET_API_URL;
+
+let syncStatusEl = null;
+function setSyncStatus(text){
+  if(syncStatusEl) syncStatusEl.textContent = text;
+}
+
+async function fetchFromSheet(){
+  if(!hasSheetApi) return null;
+  try{
+    setSyncStatus('Sincronizando…');
+    const res = await fetch(SHEET_API_URL, { method:'GET' });
+    const json = await res.json();
+    setSyncStatus('Sincronizado ' + new Date().toLocaleTimeString('pt-BR'));
+    return json.items || null;
+  }catch(e){
+    setSyncStatus('Sem conexão com a planilha — usando dados locais');
+    return null;
+  }
+}
+
+const pushTimers = {};
+function pushToSheet(id){
+  if(!hasSheetApi) return;
+  clearTimeout(pushTimers[id]);
+  pushTimers[id] = setTimeout(()=>{
+    fetch(SHEET_API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ id, data: state[id] })
+    }).then(()=> setSyncStatus('Sincronizado ' + new Date().toLocaleTimeString('pt-BR')))
+      .catch(()=> setSyncStatus('Não foi possível sincronizar agora'));
+  }, 900);
+}
+
+function pushAllToSheet(){
+  if(!hasSheetApi) return;
+  setSyncStatus('Enviando tudo para a planilha…');
+  fetch(SHEET_API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ bulk: state })
+  }).then(()=> setSyncStatus('Tudo enviado ' + new Date().toLocaleTimeString('pt-BR')))
+    .catch(()=> setSyncStatus('Não foi possível enviar agora'));
+}
+
+function computePct(num, acertos){
+  const n = parseFloat(num);
+  const a = parseFloat(acertos);
+  if(!n || n<=0 || isNaN(a)) return '—';
+  return Math.round((a/n)*100)+'%';
+}
+
+function defaultItemState(){
+  return {r1:false,r2:false,r3:false,q1:'',a1:'',q2:'',a2:'',q3:'',a3:'',notes:'',lastReviewed:null,anexos:[]};
+}
+
+async function loadState(){
+  const sheetItems = await fetchFromSheet();
+
+  for(const sec of DATA){
+    for(const it of sec.items){
+      const id = it[3];
+      let loaded = null;
+
+      if(sheetItems && sheetItems[id]){
+        state[id] = Object.assign(defaultItemState(), sheetItems[id]);
+        continue;
+      }
+
+      if(hasStorage){
+        try{
+          const res = await window.storage.get(STORAGE_PREFIX+id);
+          if(res) loaded = res.value;
+        }catch(e){}
+      }
+      if(!loaded && hasLocalStorage){
+        try{
+          const raw = localStorage.getItem(STORAGE_PREFIX+id);
+          if(raw) loaded = raw;
+        }catch(e){}
+      }
+      state[id] = loaded ? Object.assign(defaultItemState(), JSON.parse(loaded)) : defaultItemState();
+    }
+  }
+}
+
+const hasStorage = (typeof window.storage !== 'undefined' && window.storage && typeof window.storage.set === 'function');
+const hasLocalStorage = (function(){
+  try{
+    const k = '__pf_test__';
+    localStorage.setItem(k,'1');
+    localStorage.removeItem(k);
+    return true;
+  }catch(e){ return false; }
+})();
+
+function saveState(id){
+  const payload = JSON.stringify(state[id]);
+  if(hasStorage){
+    try{ window.storage.set(STORAGE_PREFIX+id, payload).catch(()=>{}); }catch(e){}
+  }
+  if(hasLocalStorage){
+    try{ localStorage.setItem(STORAGE_PREFIX+id, payload); }catch(e){}
+  }
+  pushToSheet(id);
+}
+
+// progress counts when the FIRST review (r1) is checked
+function itemCounted(s){ return !!s.r1; }
+
+function itemReviewCount(s){ return (s.r1?1:0)+(s.r2?1:0)+(s.r3?1:0); }
+function itemIsPending(s){ return !(s.r1 && s.r2 && s.r3); }
+
+function itemAccuracy(s){
+  let q=0, a=0;
+  [1,2,3].forEach(n=>{
+    const qn = parseFloat(s['q'+n]), an = parseFloat(s['a'+n]);
+    if(qn>0 && !isNaN(an)){ q+=qn; a+=an; }
+  });
+  return q>0 ? (a/q)*100 : null;
+}
+
+function accuracyClass(pct){
+  if(pct===null) return '';
+  if(pct>=75) return 'acc-good';
+  if(pct>=50) return 'acc-mid';
+  return 'acc-low';
+}
+
+function daysAgoLabel(ts){
+  if(!ts) return '';
+  const days = Math.floor((Date.now()-ts)/86400000);
+  if(days<=0) return 'revisado hoje';
+  if(days===1) return 'há 1 dia';
+  return `há ${days} dias`;
+}
+
+function computeSectionQA(sec){
+  let q=0, a=0;
+  sec.items.forEach(it=>{
+    const s = state[it[3]];
+    [1,2,3].forEach(n=>{
+      const qn = parseFloat(s['q'+n]), an = parseFloat(s['a'+n]);
+      if(qn>0 && !isNaN(an)){ q+=qn; a+=an; }
+    });
+  });
+  return { q, a, pct: q>0 ? Math.round((a/q)*100) : null };
+}
+
+function sectionInfoHTML(sec){
+  const qa = computeSectionQA(sec);
+  return `Questões respondidas: <b>${qa.q}</b><br>Acertos: <b>${qa.a}</b><br>% de acerto: <b>${qa.pct!==null ? qa.pct+'%' : '—'}</b>`;
+}
+
+function computeSectionStats(sec){
+  const items = getDisplayItems(sec);
+  const done = items.filter(it=>itemCounted(state[it[3]])).length;
+  return { done, total: items.length, pct: items.length? Math.round((done/items.length)*100) : 0 };
+}
+
+function computeOverallStats(){
+  let done=0, total=0;
+  DATA.forEach(sec=>{ const s=computeSectionStats(sec); done+=s.done; total+=s.total; });
+  return { done, total, pct: total? Math.round((done/total)*100) : 0 };
+}
+
+let filterMode = 'all';
+
+function getDisplayItems(sec){
+  let list = sec.items.slice();
+  if(filterMode !== 'all'){
+    list = list.filter(it=>{
+      const inc = getIncidence(sec.subject, it[1]) || 'low';
+      return inc === filterMode;
+    });
+  }
+  return list;
+}
+
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML='';
+  let blockSeen = {};
+
+  DATA.forEach((sec, secIdx)=>{
+    if(!blockSeen[sec.block]){
+      blockSeen[sec.block]=true;
+      const lbl = document.createElement('div');
+      lbl.className='block-label';
+      const info = BLOCO_INFO[sec.block];
+      lbl.innerHTML = sec.block + (info ? `<span class="info-tooltip">${info}</span>` : '');
+      app.appendChild(lbl);
+    }
+    const det = document.createElement('details');
+    det.className='section';
+    det.open = false;
+
+    const summary = document.createElement('summary');
+    const st = computeSectionStats(sec);
+    summary.innerHTML = `
+      <span class="sec-title">${sec.subject}<span class="info-tooltip" data-infotip="${secIdx}">${sectionInfoHTML(sec)}</span></span>
+      <span class="sec-meta">
+        <span class="sec-count" data-seccount="${secIdx}">${st.done} / ${st.total} tópicos</span>
+        <span class="sec-pct" data-secpct="${secIdx}">${st.pct}%</span>
+        <span class="mini-bar"><div data-secbar="${secIdx}" style="width:${st.pct}%"></div></span>
+        <span class="chev">▶</span>
+      </span>`;
+    det.appendChild(summary);
+
+    const itemsWrap = document.createElement('div');
+    itemsWrap.className='items';
+
+    getDisplayItems(sec).forEach(([lvl, number, text, id])=>{
+      const s = state[id];
+
+      const row = document.createElement('div');
+      row.className = 'item lvl'+lvl;
+
+      const itemRow = document.createElement('div');
+      itemRow.className = 'item-row';
+
+      const txt = document.createElement('div');
+      txt.className='txt';
+      const inc = getIncidence(sec.subject, number);
+      const incHTML = inc ? `<span class="inc-icon inc-${inc}" title="Incidência histórica: ${INC_LABEL[inc]}">${INC_SYMBOL[inc]}</span>` : '';
+      txt.innerHTML = `${incHTML}<span class="num">${number}</span>${text} `;
+      const badgeEl = document.createElement('span');
+      badgeEl.className='badge-done';
+      badgeEl.textContent = '✓ completo';
+      badgeEl.style.display = itemReviewCount(s)===3 ? '' : 'none';
+      txt.appendChild(badgeEl);
+      itemRow.appendChild(txt);
+
+      const checks = document.createElement('div');
+      checks.className='checks';
+      [1,2,3].forEach(n=>{
+        const key = 'r'+n;
+        const lab = document.createElement('label');
+        lab.className = (s[key] ? 'on ':'') + (n===1?'primary':'');
+        lab.innerHTML = `<input type="checkbox" ${s[key]?'checked':''}><span>${n}</span>`;
+        lab.querySelector('input').addEventListener('change', (e)=>{
+          s[key] = e.target.checked;
+          if(s[key]) s.lastReviewed = Date.now();
+          lab.className = (s[key] ? 'on ':'') + (n===1?'primary':'');
+          badgeEl.style.display = itemReviewCount(s)===3 ? '' : 'none';
+          saveState(id);
+          refreshAll();
+        });
+        checks.appendChild(lab);
+      });
+      itemRow.appendChild(checks);
+
+      const toggleBtn = document.createElement('button');
+      toggleBtn.className='results-toggle';
+      const dotEl = document.createElement('span');
+      dotEl.className='acc-dot';
+      dotEl.style.display='none';
+      const lblEl = document.createElement('span');
+      lblEl.className='lbl';
+      lblEl.textContent='Ver resultado das questões';
+      const chevEl = document.createElement('span');
+      chevEl.className='chev';
+      chevEl.textContent='▾';
+      toggleBtn.appendChild(dotEl);
+      toggleBtn.appendChild(lblEl);
+      toggleBtn.appendChild(chevEl);
+      itemRow.appendChild(toggleBtn);
+
+      function updateAccDot(){
+        const acc = itemAccuracy(s);
+        if(acc===null){
+          dotEl.style.display='none';
+        }else{
+          dotEl.style.display='inline-block';
+          dotEl.className = 'acc-dot ' + accuracyClass(acc);
+          dotEl.title = Math.round(acc)+'% de acerto';
+        }
+      }
+      updateAccDot();
+
+      row.appendChild(itemRow);
+
+      const panel = document.createElement('div');
+      panel.className='results-panel';
+
+      const lastRevLabel = daysAgoLabel(s.lastReviewed);
+      if(lastRevLabel){
+        const lastRevEl = document.createElement('div');
+        lastRevEl.className='last-reviewed';
+        lastRevEl.textContent = lastRevLabel;
+        panel.appendChild(lastRevEl);
+      }
+
+      [1,2,3].forEach(n=>{
+        const rRow = document.createElement('div');
+        rRow.className='results-row';
+        rRow.innerHTML = `<span class="rlabel">Revisão ${n}</span>
+          <div class="qa">
+            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" class="num-field" placeholder="Nº" value="${s['q'+n]}">
+            <span class="slash">/</span>
+            <input type="number" min="0" inputmode="numeric" pattern="[0-9]*" class="acertos-field" placeholder="Acertos" value="${s['a'+n]}">
+            <span class="pct">${computePct(s['q'+n], s['a'+n])}</span>
+          </div>`;
+        const [numInput, accInput] = rRow.querySelectorAll('input');
+        const pctEl = rRow.querySelector('.pct');
+        numInput.addEventListener('input', e=>{
+          const clean = e.target.value.replace(/[^0-9]/g, '');
+          if(clean !== e.target.value) e.target.value = clean;
+          s['q'+n] = clean; saveState(id);
+          pctEl.textContent = computePct(s['q'+n], s['a'+n]);
+          updateAccDot();
+          refreshStatsSummary();
+        });
+        accInput.addEventListener('input', e=>{
+          const clean = e.target.value.replace(/[^0-9]/g, '');
+          if(clean !== e.target.value) e.target.value = clean;
+          s['a'+n] = clean; saveState(id);
+          pctEl.textContent = computePct(s['q'+n], s['a'+n]);
+          updateAccDot();
+          refreshStatsSummary();
+        });
+        panel.appendChild(rRow);
+      });
+
+      const notesRow = document.createElement('div');
+      notesRow.className='notes-row';
+
+      // ── Rich editor ──
+      notesRow.innerHTML = `
+        <label>Anotações</label>
+        <div class="editor-toolbar">
+          <button data-cmd="bold" title="Negrito"><b>B</b></button>
+          <button data-cmd="italic" title="Itálico"><i>I</i></button>
+          <button data-cmd="underline" title="Sublinhado"><u>U</u></button>
+          <div class="sep"></div>
+          <button data-cmd="hilite-yellow" title="Marca-texto amarelo" style="background:#f5c518;color:#111;font-size:10px;padding:3px 6px;">▐ A</button>
+          <button data-cmd="hilite-green"  title="Marca-texto verde"  style="background:#4caf50;color:#fff;font-size:10px;padding:3px 6px;">▐ A</button>
+          <button data-cmd="hilite-blue"   title="Marca-texto azul"   style="background:#2196f3;color:#fff;font-size:10px;padding:3px 6px;">▐ A</button>
+          <button data-cmd="removeFormat"  title="Remover formatação" style="font-size:11px;">✕</button>
+          <div class="sep"></div>
+          <button data-cmd="insertUnorderedList" title="Lista">• Lista</button>
+        </div>
+        <div class="editor-content" contenteditable="true" data-placeholder="Adicione anotações, dicas, resumos..." data-noteid="${id}"></div>`;
+
+      const editorEl = notesRow.querySelector('.editor-content');
+      editorEl.innerHTML = s.notes || '';
+
+      notesRow.querySelectorAll('[data-cmd]').forEach(btn=>{
+        btn.addEventListener('mousedown', e=>{
+          e.preventDefault();
+          const cmd = btn.dataset.cmd;
+          if(cmd === 'hilite-yellow') document.execCommand('hiliteColor', false, '#f5c518');
+          else if(cmd === 'hilite-green')  document.execCommand('hiliteColor', false, '#4caf50');
+          else if(cmd === 'hilite-blue')   document.execCommand('hiliteColor', false, '#2196f3');
+          else document.execCommand(cmd, false, null);
+          editorEl.focus();
+        });
+      });
+
+      editorEl.addEventListener('input', ()=>{
+        s.notes = editorEl.innerHTML; saveState(id);
+      });
+      editorEl.addEventListener('blur', ()=>{
+        s.notes = editorEl.innerHTML; saveState(id);
+      });
+
+      panel.appendChild(notesRow);
+
+      // ── Anexos ──
+      if(!s.anexos) s.anexos = [];
+
+      const anexosRow = document.createElement('div');
+      anexosRow.className = 'anexos-row';
+
+      function renderAnexos(){
+        anexosRow.innerHTML = `<label>📎 Anexos</label>`;
+        const list = document.createElement('div');
+        list.className = 'anexos-list';
+        (s.anexos||[]).forEach((anx, ai)=>{
+          const item = document.createElement('div');
+          item.className = 'anexo-item';
+          const ext = anx.name.split('.').pop().toLowerCase();
+          const icon = ext==='pdf' ? '📄' : ['png','jpg','jpeg','gif','webp'].includes(ext) ? '🖼' : '📁';
+          item.innerHTML = `
+            <span class="anexo-icon">${icon}</span>
+            <span class="anexo-name" title="${anx.name}">${anx.name}</span>
+            <button class="anexo-open">Abrir</button>
+            <button class="anexo-del" title="Remover">✕</button>`;
+          item.querySelector('.anexo-open').addEventListener('click', ()=>{
+            const a = document.createElement('a');
+            a.href = anx.data; a.download = anx.name; a.click();
+          });
+          item.querySelector('.anexo-del').addEventListener('click', ()=>{
+            s.anexos.splice(ai,1); saveState(id); renderAnexos();
+          });
+          list.appendChild(item);
+        });
+        anexosRow.appendChild(list);
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'anexo-add-btn';
+        addBtn.innerHTML = '＋ Adicionar arquivo (PDF, imagem)';
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.className = 'anexo-input';
+        fileInput.accept = '.pdf,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx';
+        fileInput.multiple = true;
+
+        addBtn.addEventListener('click', ()=> fileInput.click());
+        fileInput.addEventListener('change', ()=>{
+          const files = Array.from(fileInput.files);
+          let processed = 0;
+          files.forEach(file=>{
+            if(file.size > 10 * 1024 * 1024){
+              alert(`"${file.name}" é maior que 10MB e não pode ser anexado.`);
+              processed++;
+              if(processed===files.length) renderAnexos();
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = e=>{
+              if(!s.anexos) s.anexos=[];
+              s.anexos.push({ name: file.name, data: e.target.result, size: file.size });
+              saveState(id);
+              processed++;
+              if(processed===files.length) renderAnexos();
+            };
+            reader.readAsDataURL(file);
+          });
+          fileInput.value='';
+        });
+
+        anexosRow.appendChild(addBtn);
+        anexosRow.appendChild(fileInput);
+      }
+
+      renderAnexos();
+      panel.appendChild(anexosRow);
+
+      row.appendChild(panel);
+
+      toggleBtn.addEventListener('click', ()=>{
+        const isOpen = panel.classList.toggle('open');
+        toggleBtn.classList.toggle('open', isOpen);
+      });
+
+      itemsWrap.appendChild(row);
+    });
+
+    det.appendChild(itemsWrap);
+    app.appendChild(det);
+  });
+
+  refreshAll();
+}
+
+function refreshProgress(){
+  DATA.forEach((sec, secIdx)=>{
+    const st = computeSectionStats(sec);
+    const pctEl = document.querySelector(`[data-secpct="${secIdx}"]`);
+    const barEl = document.querySelector(`[data-secbar="${secIdx}"]`);
+    const countEl = document.querySelector(`[data-seccount="${secIdx}"]`);
+    if(pctEl) pctEl.textContent = st.pct+'%';
+    if(barEl) barEl.style.width = st.pct+'%';
+    if(countEl) countEl.textContent = `${st.done} / ${st.total} tópicos`;
+  });
+  const overall = computeOverallStats();
+  document.getElementById('overallPct').textContent = overall.pct+'%';
+  document.getElementById('overallBar').style.width = overall.pct+'%';
+  document.getElementById('overallLabel').textContent = `${overall.done} / ${overall.total} tópicos`;
+}
+
+function refreshStatsSummary(){
+  DATA.forEach((sec, secIdx)=>{
+    const tipEl = document.querySelector(`[data-infotip="${secIdx}"]`);
+    if(tipEl) tipEl.innerHTML = sectionInfoHTML(sec);
+  });
+
+  let totalQ=0, totalA=0;
+  const perRev = [{q:0,a:0},{q:0,a:0},{q:0,a:0}];
+  DATA.forEach(sec=>{
+    sec.items.forEach(it=>{
+      const s = state[it[3]];
+      [1,2,3].forEach(n=>{
+        const q = parseFloat(s['q'+n]), a = parseFloat(s['a'+n]);
+        if(q>0 && !isNaN(a)){
+          totalQ+=q; totalA+=a;
+          perRev[n-1].q+=q; perRev[n-1].a+=a;
+        }
+      });
+    });
+  });
+  document.getElementById('statTotalQ').textContent = totalQ;
+  document.getElementById('statTotalA').textContent = totalA;
+  document.getElementById('statPctGeral').textContent = totalQ>0 ? Math.round((totalA/totalQ)*100)+'%' : '—';
+  perRev.forEach((r, i)=>{
+    const pct = r.q>0 ? Math.round((r.a/r.q)*100) : 0;
+    const barEl = document.getElementById('rcBar'+(i+1));
+    const pctEl = document.getElementById('rcPct'+(i+1));
+    if(barEl) barEl.style.width = pct+'%';
+    if(pctEl) pctEl.textContent = r.q>0 ? pct+'%' : '—';
+  });
+}
+
+function refreshAll(){
+  refreshProgress();
+  refreshStatsSummary();
+}
+
+document.getElementById('expandAll').addEventListener('click', ()=>{
+  document.querySelectorAll('details.section').forEach(d=>d.open=true);
+});
+document.getElementById('collapseAll').addEventListener('click', ()=>{
+  document.querySelectorAll('details.section').forEach(d=>d.open=false);
+});
+
+document.getElementById('filterSelect').addEventListener('change', (e)=>{
+  filterMode = e.target.value;
+  render();
+});
+
+
+
+// ══════════════════════════════════════════════════════════════
+//  PLANO DE ESTUDOS
+// ══════════════════════════════════════════════════════════════
+
+const PLANO_SEMANAS = [
+  {
+    n:"Semana 1", datas:"28 jul – 03 ago",
+    tema:"Internet/Intranet · Sistemas Operacionais · Redes · Segurança",
+    dias:[
+      {d:"SEG 28/jul", a:"Hardware e Software — base de tudo (já realizado ou compensar)", t:"2,5h", qui:false},
+      {d:"TER 29/jul", a:"Sistemas Operacionais — Windows e Linux (PDF disponível)", t:"2,5h", qui:false},
+      {d:"QUA 30/jul", a:"Redes — conceitos, topologias, TCP/IP, modelo OSI", t:"2,5h", qui:false},
+      {d:"QUI 31/jul", a:"— Bemobi presencial", t:"—", qui:true},
+      {d:"SEX 01/ago", a:"Internet, Intranet, Extranet, VPN, Firewall, DNS (PDF disponível)", t:"2,5h", qui:false},
+      {d:"SAB 02/ago", a:"Segurança da Informação — vírus, malware, ataques, criptografia", t:"2h", qui:false},
+      {d:"DOM 03/ago", a:"Revisão leve — releitura dos PDFs da semana (opcional)", t:"30min", qui:false},
+    ],
+    questoes:"10 questões Informática nível FÁCIL — sexta ou sábado",
+    revisao:"Nenhuma (semana 1)",
+    alerta:"Semana de fundação. Não avance para tópicos complexos sem ter a base clara."
+  },
+  {
+    n:"Semana 2", datas:"04 ago – 10 ago",
+    tema:"Office / LibreOffice completo — o tópico mais cobrado historicamente",
+    dias:[
+      {d:"SEG 04/ago", a:"Word / Writer — formatação, estilos, tabelas, mala direta", t:"2,5h", qui:false},
+      {d:"TER 05/ago", a:"Excel / Calc — fórmulas, SOMA, SE, PROCV, gráficos", t:"2,5h", qui:false},
+      {d:"QUA 06/ago", a:"Excel avançado — tabela dinâmica, filtros, formatação condicional", t:"2,5h", qui:false},
+      {d:"QUI 07/ago", a:"— Bemobi presencial", t:"—", qui:true},
+      {d:"SEX 08/ago", a:"PowerPoint / Impress — slides, animações, transições", t:"2,5h", qui:false},
+      {d:"SAB 09/ago", a:"Outlook / e-mail — protocolos POP3, IMAP, SMTP, configurações", t:"2h", qui:false},
+      {d:"DOM 10/ago", a:"Revisão espaçada: SO + Redes (7 dias — Semana 1)", t:"45min", qui:false},
+    ],
+    questoes:"10 questões FÁCEIS (Office) + 10 questões MÉDIAS (SO/Redes — reforço semana 1)",
+    revisao:"Revisão 7 dias: SO + Redes (domingo)",
+    alerta:"Office parece simples mas a Cebraspe cobra detalhes de menus e atalhos. Estude com o programa aberto."
+  },
+  {
+    n:"Semana 3", datas:"11 ago – 17 ago",
+    tema:"Navegadores · Ferramentas Web · Cloud · Segurança Avançada",
+    dias:[
+      {d:"SEG 11/ago", a:"Navegadores — Chrome, Edge, Firefox: cookies, cache, extensões, downloads", t:"2,5h", qui:false},
+      {d:"TER 12/ago", a:"Ferramentas web — busca, redes sociais, videoconferência (Teams/Meet)", t:"2,5h", qui:false},
+      {d:"QUA 13/ago", a:"Segurança avançada — phishing, ransomware, MFA, certificado digital, assinatura digital", t:"2,5h", qui:false},
+      {d:"QUI 14/ago", a:"— Bemobi presencial", t:"—", qui:true},
+      {d:"SEX 15/ago", a:"Cloud Computing — IaaS, PaaS, SaaS; nuvem pública, privada e híbrida", t:"2,5h", qui:false},
+      {d:"SAB 16/ago", a:"Acesso remoto + transferência de arquivos — VPN, RDP, FTP, SFTP", t:"2h", qui:false},
+      {d:"DOM 17/ago", a:"Revisão espaçada: Office (7 dias — Semana 2)", t:"45min", qui:false},
+    ],
+    questoes:"10 questões FÁCEIS (navegadores/cloud) + 10 questões MÉDIAS (segurança)",
+    revisao:"Revisão 7 dias: Office (domingo)",
+    alerta:"Atenção às diferenças entre assinatura digital e certificado digital — pegadinha frequente da Cebraspe."
+  },
+  {
+    n:"Semana 4", datas:"18 ago – 24 ago",
+    tema:"Banco de Dados · IA · Python · Tópicos Novos do Edital",
+    dias:[
+      {d:"SEG 18/ago", a:"Banco de dados — modelo relacional, entidades, chaves, SQL básico (SELECT, WHERE, JOIN)", t:"2,5h", qui:false},
+      {d:"TER 19/ago", a:"Big Data · Data Warehouse · Data Lake · Business Intelligence", t:"2,5h", qui:false},
+      {d:"QUA 20/ago", a:"IA e Machine Learning — conceitos, supervised/unsupervised, Copilot, ChatGPT", t:"2,5h", qui:false},
+      {d:"QUI 21/ago", a:"— Bemobi presencial", t:"—", qui:true},
+      {d:"SEX 22/ago", a:"Python básico — variáveis, tipos, controle, funções; API e ETL/ELT", t:"2,5h", qui:false},
+      {d:"SAB 23/ago", a:"Tópicos novos: biometria NIST (FPIR/FNIR), metadados, JSON/XML, Teoria Geral de Sistemas", t:"2h", qui:false},
+      {d:"DOM 24/ago", a:"Revisão Semana 3 (7 dias) + Revisão geral de Informática (fim do Mês 1)", t:"1h", qui:false},
+    ],
+    questoes:"10 questões MÉDIAS (BD/IA) + SIMULADO TEMÁTICO: 20 questões Informática (misto fácil+médio)",
+    revisao:"Revisão 7 dias: Semana 3 (domingo) + Revisão geral Mês 1",
+    alerta:"FIM DO MÊS 1 — Cole o resultado do Simulado Temático no chat para registrar taxa de acerto e acionar revisões condicionais."
+  },
+];
+
+const PLANO_MACRO = [
+  {
+    n:"Mês 1", periodo:"28 jul – 24 ago", disc:"Informática",
+    prioridade:"CRÍTICA", cor:"rgba(201,86,74,0.12)",
+    objetivo:"Cobrir todos os 23 grupos do edital de Informática, priorizando os de alta incidência histórica.",
+    topicos:[
+      {inc:"alta",   t:"Office/LibreOffice (Word, Excel, PowerPoint) — mais cobrado historicamente"},
+      {inc:"alta",   t:"Navegadores, e-mail, redes sociais, ferramentas de busca"},
+      {inc:"alta",   t:"Noções de SO — Windows e Linux"},
+      {inc:"alta",   t:"Redes de computadores — TCP/IP, OSI, IPv4/IPv6, LAN/MAN/WAN"},
+      {inc:"alta",   t:"Internet e Intranet — conceitos, VPN, Firewall, DNS"},
+      {inc:"alta",   t:"Teoria Geral de Sistemas + Sistemas de Informação"},
+      {inc:"media",  t:"Segurança da informação — vírus, malware, criptografia, MFA"},
+      {inc:"media",  t:"Cloud computing — IaaS, PaaS, SaaS"},
+      {inc:"media",  t:"Banco de dados — conceitos, SQL, modelagem ER"},
+      {inc:"media",  t:"IA e Machine Learning — conceitos e ferramentas"},
+      {inc:"media",  t:"Python básico — variáveis, estruturas, API, ETL"},
+      {inc:"nova",   t:"Biometria NIST, metadados, JSON/XML — novos no edital, atenção especial"},
+    ],
+    material:"Apostila Carreiras Policiais Vol. 1 + PDFs gerados neste chat",
+    meta:"100 questões — 10 por tópico de alta incidência",
+    simulado:"—",
+    alerta:"Não há material para tópicos novos (IA, Python, biometria). Solicitar PDFs resumo conforme avançar."
+  },
+  {
+    n:"Mês 2", periodo:"25 ago – 21 set", disc:"Contabilidade Geral",
+    prioridade:"CRÍTICA", cor:"rgba(201,86,74,0.12)",
+    objetivo:"Cobrir os 12 tópicos do edital. Os 7 de alta incidência representam 88% das questões históricas.",
+    topicos:[
+      {inc:"alta",  t:"Conceitos, objetivos e finalidades da contabilidade"},
+      {inc:"alta",  t:"Escrituração — lançamentos, partidas dobradas, regime competência/caixa"},
+      {inc:"alta",  t:"Balanço Patrimonial — conceito, objetivo, composição"},
+      {inc:"alta",  t:"DRE — Demonstração do Resultado do Exercício"},
+      {inc:"alta",  t:"Contas — débito, crédito, saldos"},
+      {inc:"alta",  t:"Contabilização de operações — juros, depreciação, compras/vendas, provisões"},
+      {inc:"alta",  t:"Lei nº 6.404/1976 e pronunciamentos do CPC"},
+      {inc:"media", t:"Patrimônio — componentes, equação fundamental"},
+      {inc:"media", t:"Atos e fatos administrativos — permutativos, modificativos, mistos"},
+      {inc:"media", t:"Plano de contas + Balancete de verificação"},
+      {inc:"baixa", t:"NBC TSP Estrutura Conceitual"},
+    ],
+    material:"Nenhum disponível — PDFs de teoria gerados neste chat tópico a tópico",
+    meta:"80 questões — foco nos 7 tópicos de alta incidência",
+    simulado:"—",
+    alerta:"Contabilidade tem a MAIOR taxa de reprovação por ser subestimada. Não deixe acumular para o final."
+  },
+  {
+    n:"Mês 3", periodo:"22 set – 19 out", disc:"Língua Portuguesa + Raciocínio Lógico",
+    prioridade:"ALTA", cor:"rgba(212,166,58,0.1)",
+    objetivo:"Consolidar Português (base M → dominância) e intensificar RLM (15min/dia desde o mês 1).",
+    topicos:[
+      {inc:"alta",  t:"Interpretação e compreensão de textos — 48% das questões de Português"},
+      {inc:"alta",  t:"Reescrita de frases e parágrafos"},
+      {inc:"alta",  t:"Mecanismos de coesão textual — referenciação, conectores"},
+      {inc:"alta",  t:"Morfossintaxe — estrutura do período"},
+      {inc:"media", t:"Pontuação, concordância, regência, classes de palavras"},
+      {inc:"media", t:"Correspondência oficial — ofício, e-mail, redação oficial"},
+      {inc:"alta",  t:"RLM — Proposições simples e compostas + tabelas-verdade"},
+      {inc:"alta",  t:"RLM — Lógica de argumentação + estruturas lógicas + equivalências"},
+      {inc:"media", t:"RLM — Conjuntos, contagem/probabilidade, diagramas lógicos"},
+    ],
+    material:"Gramática Comentada — Adriana Figueiredo + Apostila Vol. 1",
+    meta:"100 questões — 60 Português / 40 RLM",
+    simulado:"1º Simulado Completo (120q cronometrado) — fim do mês",
+    alerta:"Fim do Mês 3 = 1º Simulado Completo. Meta: referência de partida — qualquer nota é válida."
+  },
+  {
+    n:"Mês 4", periodo:"20 out – 16 nov", disc:"Dir. Constitucional + Dir. Administrativo",
+    prioridade:"MÉDIA", cor:"rgba(100,149,237,0.08)",
+    objetivo:"Constitucional tem apenas 4 tópicos no edital — 75% concentrado em 2 deles. Administrativo na sequência.",
+    topicos:[
+      {inc:"alta",  t:"Constitucional — Direitos e Garantias Fundamentais (maior peso absoluto)"},
+      {inc:"alta",  t:"Constitucional — Defesa do Estado e segurança pública"},
+      {inc:"media", t:"Constitucional — Poder Executivo + Ordem Social"},
+      {inc:"alta",  t:"Administrativo — Agentes públicos + Lei 8.112/1990"},
+      {inc:"alta",  t:"Administrativo — Poderes administrativos"},
+      {inc:"alta",  t:"Administrativo — Princípios expressos e implícitos"},
+      {inc:"alta",  t:"Administrativo — Autarquias, fundações, EP, SEM"},
+      {inc:"media", t:"Administrativo — Ato administrativo, licitação, controle, responsabilidade"},
+    ],
+    material:"Pedro Lenza (caps. Direitos Fundamentais e Seg. Pública apenas) + Apostila Vol. 1",
+    meta:"80 questões — 30 Constitucional / 50 Administrativo",
+    simulado:"—",
+    alerta:"Não leia o Lenza inteiro (2.330p). Use apenas os capítulos dos 2 tópicos de alta incidência."
+  },
+  {
+    n:"Mês 5", periodo:"17 nov – 14 dez", disc:"Dir. Penal + Dir. Proc. Penal",
+    prioridade:"MÉDIA", cor:"rgba(100,149,237,0.08)",
+    objetivo:"Penal e Processual Penal andam juntos — estudar em sequência reduz tempo e aumenta fixação.",
+    topicos:[
+      {inc:"alta",  t:"Penal — Lei penal no tempo e no espaço"},
+      {inc:"alta",  t:"Penal — Crimes contra a pessoa + patrimônio + Adm. Pública"},
+      {inc:"alta",  t:"Penal — Princípios básicos + ilicitude + tentativa"},
+      {inc:"media", t:"Penal — Crimes contra a fé pública + demais"},
+      {inc:"alta",  t:"Proc. Penal — Inquérito policial (95% da disciplina em 3 tópicos)"},
+      {inc:"alta",  t:"Proc. Penal — Prova (preservação de local, busca e apreensão, reconhecimento)"},
+      {inc:"alta",  t:"Proc. Penal — Prisão em flagrante"},
+      {inc:"media", t:"Proc. Penal — Restrição de liberdade demais modalidades"},
+    ],
+    material:"Apostila PRF Agora Eu Passo + Vade Mécum Estratégico PF",
+    meta:"80 questões — 40 Penal / 40 Proc. Penal",
+    simulado:"2º Simulado Completo — fim do mês. Meta: nota líquida > 35 pts",
+    alerta:"Inquérito policial é o coração do Proc. Penal para Agente. Não subestime esse tópico."
+  },
+  {
+    n:"Mês 6", periodo:"15 dez – 11 jan", disc:"Estatística + Leg. Especial + Dir. Humanos",
+    prioridade:"MÉDIA/COMPL.", cor:"rgba(30,126,74,0.08)",
+    objetivo:"Fechar a grade completa. Estatística tem peso real (83% em 6 tópicos). Legislação: focar nas 5 leis históricas.",
+    topicos:[
+      {inc:"alta",  t:"Estatística — Probabilidade: axiomas, distribuição normal, condicional"},
+      {inc:"alta",  t:"Estatística — Descritiva: gráficos, tabelas, média/mediana/moda, variância"},
+      {inc:"alta",  t:"Estatística — Amostragem (simples, estratificada, sistemática, conglomerados)"},
+      {inc:"media", t:"Estatística — Inferência + regressão linear"},
+      {inc:"alta",  t:"Leg. Especial — Lei Antidrogas (11.343/2006)"},
+      {inc:"alta",  t:"Leg. Especial — Estatuto do Desarmamento (10.826/2003)"},
+      {inc:"alta",  t:"Leg. Especial — Lei de Tortura (9.455/1997)"},
+      {inc:"media", t:"Leg. Especial — Crimes Ambientais + ECA"},
+      {inc:"nova",  t:"Leg. Especial — Leis novas do edital (migração, crime cibernético, seg. privada)"},
+      {inc:"media", t:"Direitos Humanos — CF/1988 + Convenções + uso da força policial"},
+    ],
+    material:"Apostila Vol. 1 (Estatística) + Vade Mécum PF + Apostila PRF (Dir. Humanos)",
+    meta:"80 questões — 30 Estatística / 30 Leg. Especial / 20 Dir. Humanos",
+    simulado:"3º Simulado Completo — fim do mês. Meta: nota líquida > 42 pts",
+    alerta:"Fim da Fase 1. Colar resultado do 3º Simulado para diagnóstico e montagem da Fase 2."
+  },
+];
+
+// ── Estado do plano ──────────────────────────────────────────
+const PLANO_KEY_DIA = 'pf-plano:dia:';
+const PLANO_KEY_MES = 'pf-plano:mes:';
+// planState.dia keys: "semIdx-diaIdx" → bool
+// planState.mes keys: mesIdx → bool
+const planState = { dia: {}, mes: {} };
+
+function diaKey(si, di){ return si+'-'+di; }
+
+function saveDia(si, di, val){
+  const k = diaKey(si, di);
+  planState.dia[k] = val;
+  try{ localStorage.setItem(PLANO_KEY_DIA+k, val?'1':'0'); }catch(e){}
+}
+
+function saveMes(i, val){
+  planState.mes[i] = val;
+  try{ localStorage.setItem(PLANO_KEY_MES+i, val?'1':'0'); }catch(e){}
+}
+
+function loadPlanState(){
+  // dias
+  PLANO_SEMANAS.forEach((sem, si)=>{
+    sem.dias.forEach((_, di)=>{
+      const k = diaKey(si, di);
+      try{
+        const v = localStorage.getItem(PLANO_KEY_DIA+k);
+        planState.dia[k] = v === '1';
+      }catch(e){ planState.dia[k] = false; }
+    });
+  });
+  // meses
+  PLANO_MACRO.forEach((_, i)=>{
+    try{
+      const v = localStorage.getItem(PLANO_KEY_MES+i);
+      planState.mes[i] = v === '1';
+    }catch(e){ planState.mes[i] = false; }
+  });
+}
+
+// Conta dias úteis (não qui) concluídos
+function countDiasDone(){
+  let done = 0, total = 0;
+  PLANO_SEMANAS.forEach((sem, si)=>{
+    sem.dias.forEach((d, di)=>{
+      if(d.qui) return;
+      total++;
+      if(planState.dia[diaKey(si,di)]) done++;
+    });
+  });
+  return { done, total };
+}
+
+function updatePlanProgress(){
+  // dias → barra de semanas
+  const { done, total } = countDiasDone();
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('semPct').textContent = pct+'%';
+  document.getElementById('semBar').style.width = pct+'%';
+  document.getElementById('semLabel').textContent = `${done} / ${total} dias concluídos`;
+
+  // atualiza mini-barra de cada semana no header
+  PLANO_SEMANAS.forEach((sem, si)=>{
+    const uteis = sem.dias.filter(d=>!d.qui);
+    const semDone = uteis.filter((_,di_real)=>{
+      const di = sem.dias.indexOf(uteis[di_real]);
+      return planState.dia[diaKey(si, di)];
+    }).length;
+    const el = document.getElementById('sem-mini-'+si);
+    if(el) el.textContent = semDone+'/'+uteis.length;
+    // se todos concluídos, marcar header como done
+    const hdr = document.getElementById('sem-hdr-'+si);
+    if(hdr){
+      hdr.classList.toggle('all-done', semDone === uteis.length && uteis.length > 0);
+    }
+  });
+
+  // macro
+  const mesDone = Object.values(planState.mes).filter(Boolean).length;
+  const mesTotal = PLANO_MACRO.length;
+  const mesPct = mesTotal ? Math.round((mesDone/mesTotal)*100) : 0;
+  document.getElementById('macroPct').textContent = mesPct+'%';
+  document.getElementById('macroBar').style.width = mesPct+'%';
+  document.getElementById('macroLabel').textContent = `${mesDone} / ${mesTotal} meses concluídos`;
+}
+
+const INC_TAG = {
+  alta:  '<span class="inc-tag alta">▲ Alta</span>',
+  media: '<span class="inc-tag media">▬ Média</span>',
+  baixa: '<span class="inc-tag baixa">▼ Baixa</span>',
+  nova:  '<span class="inc-tag nova">★ Nova</span>',
+};
+const CHECK_SVG = '<svg class="checkmark-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function renderSemanas(){
+  const c = document.getElementById('semanasContainer');
+  c.innerHTML = '';
+  PLANO_SEMANAS.forEach((sem, si)=>{
+    const uteis = sem.dias.filter(d=>!d.qui);
+    const semDoneCount = uteis.filter((_,ri)=>{
+      const di = sem.dias.indexOf(uteis[ri]);
+      return planState.dia[diaKey(si, di)];
+    }).length;
+    const allDone = semDoneCount === uteis.length && uteis.length > 0;
+
+    const div = document.createElement('div');
+    div.className = 'sem-card';
+
+    const diasHTML = sem.dias.map((d, di)=>{
+      if(d.qui) return `
+        <tr class="qui">
+          <td class="dia-label">${d.d}</td>
+          <td colspan="2" style="color:var(--text-faint);font-style:italic;">${d.a}</td>
+        </tr>`;
+      const isDone = !!planState.dia[diaKey(si, di)];
+      return `
+        <tr class="${isDone?'dia-done':''}">
+          <td>
+            <div class="dia-check-wrap">
+              <button class="dia-check ${isDone?'done':''}" data-si="${si}" data-di="${di}" title="Marcar como concluído">
+                ${CHECK_SVG}
+              </button>
+              <span class="dia-label ${isDone?'tachado':''}">${d.d}</span>
+            </div>
+          </td>
+          <td class="${isDone?'tachado':''}">${d.a}</td>
+          <td style="text-align:center;color:var(--gold-soft);font-weight:600;white-space:nowrap;">${d.t}</td>
+        </tr>`;
+    }).join('');
+
+    div.innerHTML = `
+      <div class="sem-header ${allDone?'all-done':''}" id="sem-hdr-${si}" data-si="${si}">
+        <div class="sem-num">Semana ${si+1}</div>
+        <div class="sem-titulo">${sem.tema}</div>
+        <div class="sem-datas">${sem.datas}</div>
+        <div class="sem-mini-count" id="sem-mini-${si}">${semDoneCount}/${uteis.length}</div>
+        <span class="sem-chev">▶</span>
+      </div>
+      <div class="sem-body">
+        <div class="sem-tema">${sem.n} · ${sem.datas}</div>
+        <table class="dias-table">
+          <thead><tr><th style="width:140px">Dia</th><th>Atividade</th><th style="width:60px">Tempo</th></tr></thead>
+          <tbody>${diasHTML}</tbody>
+        </table>
+        <div class="sem-footer">
+          <span><b>Questões:</b> ${sem.questoes}</span>
+          <span><b>Revisão espaçada:</b> ${sem.revisao}</span>
+        </div>
+        <div class="sem-alerta">⚠ ${sem.alerta}</div>
+      </div>`;
+
+    c.appendChild(div);
+
+    div.querySelector('.sem-header').addEventListener('click', e=>{
+      div.classList.toggle('open');
+    });
+
+    div.querySelectorAll('.dia-check').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.stopPropagation();
+        const si2 = parseInt(btn.dataset.si);
+        const di2 = parseInt(btn.dataset.di);
+        const newVal = !planState.dia[diaKey(si2, di2)];
+        saveDia(si2, di2, newVal);
+        btn.classList.toggle('done', newVal);
+        const tr = btn.closest('tr');
+        tr.classList.toggle('dia-done', newVal);
+        tr.querySelectorAll('.tachado, .dia-label').forEach(el=>{
+          if(el.classList.contains('dia-label') || el.tagName==='TD'){
+            el.classList.toggle('tachado', newVal);
+          }
+        });
+        // taca o texto da atividade
+        const tdAtiv = tr.querySelectorAll('td')[1];
+        if(tdAtiv) tdAtiv.classList.toggle('tachado', newVal);
+        const lblDia = tr.querySelector('.dia-label');
+        if(lblDia) lblDia.classList.toggle('tachado', newVal);
+        updatePlanProgress();
+      });
+    });
+  });
+}
+
+function renderMacro(){
+  const c = document.getElementById('macroContainer');
+  c.innerHTML = '';
+  PLANO_MACRO.forEach((mes, i)=>{
+    const done = !!planState.mes[i];
+    const div = document.createElement('div');
+    div.className = 'mes-card';
+    div.innerHTML = `
+      <div class="mes-header" data-mes="${i}">
+        <div class="mes-num">${mes.n}</div>
+        <div class="mes-titulo">${mes.disc}</div>
+        <div class="mes-periodo">${mes.periodo}</div>
+        <div class="mes-check ${done?'done':''}" data-check-mes="${i}" title="Marcar como concluído">
+          ${CHECK_SVG}
+        </div>
+        <span class="mes-chev">▶</span>
+      </div>
+      <div class="mes-body" style="background:${mes.cor}10;">
+        <div class="mes-objetivo">${mes.objetivo}</div>
+        <ul class="mes-topicos">
+          ${mes.topicos.map(t=>`<li>${INC_TAG[t.inc]||''} ${t.t}</li>`).join('')}
+        </ul>
+        <div class="mes-footer">
+          <span><b>Material:</b> ${mes.material}</span>
+          <span><b>Meta de questões:</b> ${mes.meta}</span>
+          <span><b>Simulado:</b> ${mes.simulado}</span>
+        </div>
+        <div class="mes-alerta">⚠ ${mes.alerta}</div>
+      </div>`;
+    c.appendChild(div);
+    div.querySelector('.mes-header').addEventListener('click', e=>{
+      if(e.target.closest('[data-check-mes]')) return;
+      div.classList.toggle('open');
+    });
+    div.querySelector('[data-check-mes]').addEventListener('click', e=>{
+      e.stopPropagation();
+      const newVal = !planState.mes[i];
+      saveMes(i, newVal);
+      e.currentTarget.classList.toggle('done', newVal);
+      updatePlanProgress();
+    });
+  });
+}
+
+// ── Toggle plano view ────────────────────────────────────────
+let planoVisible = false;
+
+document.getElementById('btnPlano').addEventListener('click', ()=>{
+  planoVisible = !planoVisible;
+  const pv = document.getElementById('planoView');
+  const appDiv = document.getElementById('app');
+  if(planoVisible){
+    pv.classList.add('active');
+    appDiv.style.display = 'none';
+    document.getElementById('expandAll').style.display = 'none';
+    document.getElementById('collapseAll').style.display = 'none';
+    document.getElementById('filterSelect').style.display = 'none';
+    document.getElementById('btnPlano').textContent = '← Voltar ao Edital';
+    document.getElementById('btnPlano').style.background = 'none';
+    document.getElementById('btnPlano').style.border = '1px solid var(--gold)';
+    document.getElementById('btnPlano').style.color = 'var(--gold)';
+  } else {
+    pv.classList.remove('active');
+    appDiv.style.display = '';
+    document.getElementById('expandAll').style.display = '';
+    document.getElementById('collapseAll').style.display = '';
+    document.getElementById('filterSelect').style.display = '';
+    document.getElementById('btnPlano').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Plano de Estudos';
+    document.getElementById('btnPlano').style.background = 'var(--gold)';
+    document.getElementById('btnPlano').style.border = 'none';
+    document.getElementById('btnPlano').style.color = '#111';
+  }
+});
+
+// ── Tab switching ────────────────────────────────────────────
+document.querySelectorAll('.plano-tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.plano-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.plano-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel'+btn.dataset.tab.charAt(0).toUpperCase()+btn.dataset.tab.slice(1)).classList.add('active');
+  });
+});
+
+// ── Init plano ───────────────────────────────────────────────
+loadPlanState();
+renderSemanas();
+renderMacro();
+updatePlanProgress();
+
+// ══════════════════════════════════════════════════════════════
+const THEME_KEY = 'pf-edital:theme';
+const modeBtn = document.getElementById('modeToggle');
+const modeIcon = document.getElementById('modeIcon');
+
+const MOON_PATH = '<path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5z"></path>';
+const SUN_PATH = '<circle cx="12" cy="12" r="4.2"></circle>' +
+  '<g>' +
+  '<line x1="12" y1="1.5" x2="12" y2="4"></line>' +
+  '<line x1="12" y1="20" x2="12" y2="22.5"></line>' +
+  '<line x1="1.5" y1="12" x2="4" y2="12"></line>' +
+  '<line x1="20" y1="12" x2="22.5" y2="12"></line>' +
+  '<line x1="4.2" y1="4.2" x2="5.9" y2="5.9"></line>' +
+  '<line x1="18.1" y1="18.1" x2="19.8" y2="19.8"></line>' +
+  '<line x1="4.2" y1="19.8" x2="5.9" y2="18.1"></line>' +
+  '<line x1="18.1" y1="5.9" x2="19.8" y2="4.2"></line>' +
+  '</g>';
+
+function applyTheme(theme){
+  document.body.classList.toggle('light', theme === 'light');
+  modeIcon.innerHTML = theme === 'light' ? SUN_PATH : MOON_PATH;
+}
+
+async function loadTheme(){
+  if(hasStorage){
+    try{
+      const res = await window.storage.get(THEME_KEY);
+      if(res) return res.value;
+    }catch(e){}
+  }
+  if(hasLocalStorage){
+    try{
+      const raw = localStorage.getItem(THEME_KEY);
+      if(raw) return raw;
+    }catch(e){}
+  }
+  return 'dark';
+}
+
+modeBtn.addEventListener('click', async ()=>{
+  const next = document.body.classList.contains('light') ? 'dark' : 'light';
+  applyTheme(next);
+  if(hasStorage){
+    try{ await window.storage.set(THEME_KEY, next); }catch(e){}
+  }
+  if(hasLocalStorage){
+    try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
+  }
+});
+
+(async ()=>{
+  const theme = await loadTheme();
+  applyTheme(theme);
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
